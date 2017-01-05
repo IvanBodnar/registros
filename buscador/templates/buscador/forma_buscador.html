@@ -8,15 +8,14 @@
 
     <form action="{% url 'buscador_ingresar_calle' %}" method="post">
         {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
         <div class="form-group">
-            <label for="calle1">Calle1:</label>
-            <input id="calle1" type="text">
+            {{ field.errors }}
+            {{ field.label_tag }}
+            {{ field }}
         </div>
-        <div class="form-group">
-            <label for="calle2">Calle2:</label>
-            <input id="calle2" type="text">
-        </div>
-
+        {% endfor %}
         <button type="submit" class="btn btn-default">Enviar</button>
 
     </form>

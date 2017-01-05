@@ -17,7 +17,8 @@ class IngresarCalles(View):
         if form.is_valid():
             calle1 = form.cleaned_data['calle1']
             calle2 = form.cleaned_data['calle2']
-
             return HttpResponse(calle1 + calle2)
         else:
-            return CallesForm()
+            return render(request=request,
+                          template_name='buscador/forma_buscador.html',
+                          context={'form': form})
