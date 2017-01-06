@@ -8,9 +8,7 @@ class CallesForm(forms.Form):
     calle2 = forms.CharField(max_length=100)
 
     def clean_calle1(self):
-
         new_calle1 = (self.cleaned_data['calle1'].lower())
-
         if new_calle1 == 'mal':
             raise ValidationError('Dato Erroneo')
 
