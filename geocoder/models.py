@@ -21,6 +21,9 @@ class CallesGeocod(models.Model):
     geom = models.GeometryField(blank=True, null=True)
     rango = IntegerRangeField(blank=True, null=True)
 
+    def __str__(self):
+        return '{}'.format(self.nombre)
+
     class Meta:
         managed = False
         db_table = 'calles_geocod'
