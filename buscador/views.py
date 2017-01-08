@@ -1,9 +1,10 @@
+import json
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
-from dal import autocomplete
 from .forms import CallesForm
-from geocoder.models import CallesGeocod
+from geocoder.geocoder_logic import get_calles
+
 
 
 class IngresarCalles(View):
@@ -15,7 +16,8 @@ class IngresarCalles(View):
 
         return render(request=request,
                       template_name=self.template_name,
-                      context={'form': self.form_class()})
+                      context={'form': self.form_class(),
+                               'calles': json.dumps(get_calles())})
 
     def post(self, request):
         bound_form = self.form_class(request.POST)
@@ -26,15 +28,6 @@ class IngresarCalles(View):
         else:
             return render(request=request,
                           template_name=self.template_name,
-                          context={'form': bound_form})
+                          context={'form': bound_form,
+                                   'calles': json.dumps(get_calles())})
 
-
-class CallesAutocomplete(autocomplete.Select2QuerySetView):
-
-    def get_queryset(self):
-        qs = CallesGeocod.objects.order_by('nombre').distinct('nombre')
-
-        if self.q:
-            qs = qs.filter(nombre__istartswith=self.q)
-
-        return qs

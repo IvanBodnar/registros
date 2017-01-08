@@ -8,13 +8,16 @@
 
     <div class="align">
         <form action="{% url 'buscador_ingresar_calle' %}" method="post">
+            <input type="hidden" id="calles" name="variable" value="{{ calles }}">
             {% csrf_token %}
             {{ form.non_field_errors }}
             {% for field in form %}
             <div class="form-group">
                 {{ field.errors }}
                 {{ field.label_tag }}
+
                 {{ field }}
+
             </div>
             {% endfor %}
             <div class="r">
