@@ -6,6 +6,16 @@ from .forms import CallesForm
 from geocoder.geocoder_logic import get_calles
 
 
+def ajax_calles(request):
+    """
+    Returns json with street names to feed
+    the autocomplete fields calle1 and calle2
+    :param request:
+    :return: json
+    """
+    return HttpResponse(json.dumps(get_calles()))
+
+
 class IngresarCalles(View):
 
     form_class = CallesForm
@@ -15,8 +25,7 @@ class IngresarCalles(View):
 
         return render(request=request,
                       template_name=self.template_name,
-                      context={'form': self.form_class(),
-                               'calles': json.dumps(get_calles())})
+                      context={'form': self.form_class()})
 
     def post(self, request):
         bound_form = self.form_class(request.POST)
@@ -27,6 +36,5 @@ class IngresarCalles(View):
         else:
             return render(request=request,
                           template_name=self.template_name,
-                          context={'form': bound_form,
-                                   'calles': json.dumps(get_calles())})
+                          context={'form': bound_form})
 

@@ -4,8 +4,8 @@ from django.core.exceptions import ValidationError
 
 class CallesForm(forms.Form):
 
-    calle1 = forms.CharField(max_length=100)
-    calle2 = forms.CharField(max_length=100)
+    calle1 = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'id': 'calle1'}))
+    calle2 = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'id': 'calle2'}))
 
     def clean_calle1(self):
         new_calle1 = (self.cleaned_data['calle1'].lower())
