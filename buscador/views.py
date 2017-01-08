@@ -6,7 +6,6 @@ from .forms import CallesForm
 from geocoder.geocoder_logic import get_calles
 
 
-
 class IngresarCalles(View):
 
     form_class = CallesForm

@@ -2,14 +2,6 @@ from django import forms
 from django.core.exceptions import ValidationError
 
 
-class AutocompleteWidget(forms.TextInput):
-
-    @property
-    def media(self):
-        return forms.Media(js=('buscador/autocomplete_calles.js',))
-
-
-
 class CallesForm(forms.Form):
 
     calle1 = forms.CharField(max_length=100)
