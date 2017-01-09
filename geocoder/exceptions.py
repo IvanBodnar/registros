@@ -1,0 +1,2 @@
+class CalleNoExiste(Exception):
+    pass
