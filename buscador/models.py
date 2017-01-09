@@ -38,6 +38,9 @@ class Hechos(models.Model):
     anio = models.IntegerField(blank=True, null=True)
     fh = models.DateTimeField(blank=True, null=True)
 
+    def __str__(self):
+        return '{}'.format(self.direccion_normalizada)
+
     class Meta:
         managed = False
         db_table = 'hechos'
