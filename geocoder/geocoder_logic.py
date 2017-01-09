@@ -16,18 +16,16 @@ class Calle:
     def __init__(self, nombre):
         self.nombre = nombre
 
+    def _ejecutar_query(self, query, *args):
+        with connection.cursor() as cursor:
+            cursor.execute(query, args)
+            resultado = cursor.fetchone()[0]
+        return resultado
+
     def ubicar_altura(self, altura):
         query = "select altura_direccion_calle(%s, %s)"
-        with connection.cursor() as cursor:
-            cursor.execute(query, [self.nombre, altura])
-            resultado = cursor.fetchone()[0]
-
-        return resultado
+        return self._ejecutar_query(query, self.nombre, altura)
 
     def __add__(self, other):
         query = "select punto_interseccion(%s, %s)"
-        with connection.cursor() as cursor:
-            cursor.execute(query, [self.nombre, other.nombre])
-            resultado = cursor.fetchone()[0]
-
-        return resultado
+        return self._ejecutar_query(query, self.nombre, other.nombre)
