@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
 from .forms import CallesForm
-from geocoder.geocoder_logic import get_calles
+from geocoder.geocoder_logic import get_calles, Calle
 
 
 def ajax_calles(request):
@@ -32,7 +32,7 @@ class IngresarCalles(View):
         if bound_form.is_valid():
             calle1 = bound_form.cleaned_data['calle1']
             calle2 = bound_form.cleaned_data['calle2']
-            return HttpResponse(calle1 + calle2)
+            return HttpResponse('{}'.format(Calle(calle1) + Calle(calle2)))
         else:
             return render(request=request,
                           template_name=self.template_name,
