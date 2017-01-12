@@ -48,7 +48,7 @@ class Calle:
         :param altura int: house number
         :return str: string representation of geometry
         """
-        query = "select altura_direccion_calle(%s, %s)"
+        query = "select st_astext(altura_direccion_calle(%s, %s))"
         return self._ejecutar_query(query, self.nombre, altura)
 
     def __add__(self, other):
@@ -60,7 +60,7 @@ class Calle:
         :return str: string representation of the point marking
         the intersection in wgs84 crs.
         """
-        query = "select punto_interseccion(%s, %s)"
+        query = "select st_astext(punto_interseccion(%s, %s))"
         return self._ejecutar_query(query, self.nombre, other.nombre)
 
     def __str__(self):
