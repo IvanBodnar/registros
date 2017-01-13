@@ -33,7 +33,7 @@ class Hechos(models.Model):
     semestre = models.IntegerField(blank=True, null=True)
     x = models.FloatField(blank=True, null=True)
     y = models.FloatField(blank=True, null=True)
-    geom = models.GeometryField(blank=True, null=True)
+    geom = models.PointField(blank=True, null=True, srid=4326)
     cantidad_victimas = models.IntegerField(blank=True, null=True)
     anio = models.IntegerField(blank=True, null=True)
     fh = models.DateTimeField(blank=True, null=True)

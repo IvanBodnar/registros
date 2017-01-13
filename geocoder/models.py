@@ -18,7 +18,7 @@ class CallesGeocod(models.Model):
     alt_i = models.IntegerField(blank=True, null=True)
     alt_f = models.IntegerField(blank=True, null=True)
     tipo = models.CharField(max_length=50, blank=True, null=True)
-    geom = models.GeometryField(blank=True, null=True)
+    geom = models.MultiLineStringField(blank=True, null=True, srid=4326)
     rango = IntegerRangeField(blank=True, null=True)
 
     def __str__(self):
