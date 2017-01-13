@@ -9,8 +9,8 @@ from .siniestros import Siniestros
 
 def ajax_calles(request):
     """
-    Returns json with street names to feed
-    the autocomplete fields calle1 and calle2
+    Retorna json con los nombres de las calles para pasar
+    al autocomplete de los campos calle1 y calle2
     :param request:
     :return: json
     """

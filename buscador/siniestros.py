@@ -6,7 +6,7 @@ from django.contrib.gis.db.models.functions import Transform
 class Siniestros:
 
     def __init__(self, punto, radio, anios):
-        self.punto = self.punto_a_3857(punto)
+        self.punto_3857 = self.punto_a_3857(punto)
         self.radio = radio
         self.anios = anios
 
@@ -22,7 +22,11 @@ class Siniestros:
 
     @staticmethod
     def punto_a_3857(punto):
-        ge = GEOSGeometry(punto, srid=4326)
-        ge.transform(3857)
-        return ge
+        p_3857 = GEOSGeometry(punto, srid=4326)
+        p_3857.transform(3857)
+        return p_3857
+
+    def siniestros_radio(self):
+        qs_3857 = self._filtrar_hechos()
+        return qs_3857.filter(geom__distance_lt=(self.punto_3857, self.radio))
 
