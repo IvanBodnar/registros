@@ -23,20 +23,24 @@ class IngresarCalles(View):
     template_name = 'buscador/forma_buscador.html'
 
     def get(self, request):
+        print(request.GET) #DEBUG
+        if 'calle1' and 'calle2' in request.GET:
+            print(request.GET) #DEBUG
+            bound_form = self.form_class(request.GET)
 
-        return render(request=request,
-                      template_name=self.template_name,
-                      context={'form': self.form_class()})
-
-    def post(self, request):
-        bound_form = self.form_class(request.POST)
-        if bound_form.is_valid():
-            calle1 = bound_form.cleaned_data['calle1']
-            calle2 = bound_form.cleaned_data['calle2']
-            interseccion = Calle(calle1) + Calle(calle2)
-            return HttpResponse('{}'.format(Siniestros.prueba(interseccion)))
+            if bound_form.is_valid():
+                calle1 = bound_form.cleaned_data['calle1']
+                calle2 = bound_form.cleaned_data['calle2']
+                interseccion = Calle(calle1) + Calle(calle2)
+                return HttpResponse('{}'.format(interseccion))
+            else:
+                return render(request=request,
+                              template_name=self.template_name,
+                              context={'form': bound_form})
         else:
             return render(request=request,
                           template_name=self.template_name,
-                          context={'form': bound_form})
+                          context={'form': self.form_class()})
+
+
 
