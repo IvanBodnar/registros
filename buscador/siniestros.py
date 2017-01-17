@@ -28,5 +28,6 @@ class Siniestros:
 
     def siniestros_radio(self):
         qs_3857 = self._filtrar_hechos()
-        return qs_3857.filter(geom__distance_lt=(self.punto_3857, self.radio))
+        resultado = qs_3857.filter(geom__distance_lt=(self.punto_3857, self.radio))
+        return [x.direccion_normalizada for x in resultado]
 

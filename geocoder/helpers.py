@@ -19,12 +19,13 @@ class Calle:
         Takes a street name and checks its existence
         :param nombre: str
         """
-        try:
-            query = "select existe_calle(%s)"
-            self._ejecutar_query(query, nombre)
+        query = "select existe_calle(%s)"
+        resultado = self._ejecutar_query(query, nombre)
+
+        if resultado:
             self.nombre = nombre.lower()
-        except:
-            raise CalleNoExiste('La calle no existe')
+        else:
+            raise CalleNoExiste('La calle {} no existe'.format(nombre))
 
     def _ejecutar_query(self, query, *args):
         """
