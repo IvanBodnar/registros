@@ -31,8 +31,8 @@ class CallesForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        calle1 = cleaned_data['calle1']
-        calle2 = cleaned_data['calle2']
+        calle1 = cleaned_data['calle1'].lower()
+        calle2 = cleaned_data['calle2'].lower()
 
         try:
             Calle(calle1) + Calle(calle2)
