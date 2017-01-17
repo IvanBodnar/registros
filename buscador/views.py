@@ -21,6 +21,7 @@ class IngresarCalles(View):
 
     form_class = CallesForm
     template_name = 'buscador/forma_buscador.html'
+    exito = 'buscador/tabla_buscador.html'
 
     def get(self, request):
         print(request.GET) #DEBUG
@@ -34,7 +35,7 @@ class IngresarCalles(View):
                 interseccion = Calle(calle1) + Calle(calle2)
                 siniestros = Siniestros(interseccion, 300, [2013, 1014, 2015])
 
-                return HttpResponse('{}'.format(siniestros.siniestros_radio()))
+                return render(request, self.exito, context={'items': siniestros.siniestros_radio()})
 
             else:
                 return render(request=request,
