@@ -1,6 +1,6 @@
 from django.db import connection
 from .models import CallesGeocod
-from .exceptions import CalleNoExiste
+from .exceptions import CalleNoExiste, InterseccionNoExiste
 
 
 def get_calles():
@@ -22,10 +22,11 @@ class Calle:
         query = "select existe_calle(%s)"
         resultado = self._ejecutar_query(query, nombre)
 
-        if resultado:
-            self.nombre = nombre.lower()
-        else:
-            raise CalleNoExiste('La calle {} no existe'.format(nombre))
+        if not resultado:
+             raise CalleNoExiste('La calle {} no existe'.format(nombre))
+
+        self.nombre = nombre.lower()
+
 
     def _ejecutar_query(self, query, *args):
         """
@@ -62,7 +63,12 @@ class Calle:
         the intersection in wgs84 crs.
         """
         query = "select st_astext(punto_interseccion(%s, %s))"
-        return self._ejecutar_query(query, self.nombre, other.nombre)
+        resultado = self._ejecutar_query(query, self.nombre, other.nombre)
+
+        if not resultado:
+            raise InterseccionNoExiste('No se Encontró la Intersección')
+
+        return resultado
 
     def __str__(self):
         return '{}'.format(self.nombre)

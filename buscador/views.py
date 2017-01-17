@@ -33,7 +33,7 @@ class IngresarCalles(View):
                 calle1 = bound_form.cleaned_data['calle1']
                 calle2 = bound_form.cleaned_data['calle2']
                 interseccion = Calle(calle1) + Calle(calle2)
-                siniestros = Siniestros(interseccion, 300, [2013, 1014, 2015])
+                siniestros = Siniestros(interseccion, 1000, [2013, 1014, 2015])
 
                 return render(request, self.exito, context={'items': siniestros.siniestros_radio()})
 

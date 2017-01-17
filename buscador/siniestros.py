@@ -1,5 +1,5 @@
 from .models import Hechos
-from django.contrib.gis.geos import GEOSGeometry, Point
+from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.db.models.functions import Transform
 
 
