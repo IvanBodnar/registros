@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
 from .forms import CallesForm
-from geocoder.geocoder_logic import get_calles, Calle
+from geocoder.helpers import get_calles, Calle
 from .siniestros import Siniestros
 
 
