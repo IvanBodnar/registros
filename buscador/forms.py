@@ -6,8 +6,8 @@ from geocoder.exceptions import CalleNoExiste, InterseccionNoExiste
 
 class CallesForm(forms.Form):
 
-    calle1 = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'id': 'calle1'}))
-    calle2 = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'id': 'calle2'}))
+    calle1 = forms.CharField(max_length=60, widget=forms.TextInput(attrs={'id': 'calle1'}))
+    calle2 = forms.CharField(max_length=60, widget=forms.TextInput(attrs={'id': 'calle2'}))
 
     def clean_calle1(self):
         cleaned = self.cleaned_data['calle1'].lower()
@@ -31,11 +31,12 @@ class CallesForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        calle1 = cleaned_data['calle1'].lower()
-        calle2 = cleaned_data['calle2'].lower()
+        if cleaned_data:
+            calle1 = cleaned_data['calle1'].lower()
+            calle2 = cleaned_data['calle2'].lower()
 
-        try:
-            Calle(calle1) + Calle(calle2)
-        except InterseccionNoExiste as e:
-            raise ValidationError(e.args[0])
+            try:
+                Calle(calle1) + Calle(calle2)
+            except InterseccionNoExiste as e:
+                raise ValidationError(e.args[0])
 
