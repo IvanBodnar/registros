@@ -24,9 +24,7 @@ class IngresarCalles(View):
     exito = 'buscador/tabla_buscador.html'
 
     def get(self, request):
-        print(request.GET) #DEBUG
         if 'calle1' and 'calle2' in request.GET:
-            print(request.GET) #DEBUG
             bound_form = self.form_class(request.GET)
 
             if bound_form.is_valid():
