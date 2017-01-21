@@ -20,9 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'm78-jvb2n9&-y)65u0r+mft%ogwuwy&(e*1d7k0kzwv^khxiwg'
+SECRET_KEY = os.environ.get('SECRET_KEY', None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -77,15 +78,17 @@ WSGI_APPLICATION = 'registros.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'geocoder',
-        'USER': 'ivan',
-        'PORT': 5432,
+        'NAME': os.environ.get("NAME", None),
+        'USER': os.environ.get("USER", None),
+        'PASSWORD': os.environ.get("PASSWORD", None),
+        'PORT': os.environ.get("PORT", None),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
