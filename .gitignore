@@ -3,3 +3,4 @@ __pycache__/
 registros/environment/
 *.sh
 *.pyc
+_settings.py

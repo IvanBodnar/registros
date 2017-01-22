@@ -37,9 +37,7 @@ class Hechos(models.Model):
     cantidad_victimas = models.IntegerField(blank=True, null=True)
     anio = models.IntegerField(blank=True, null=True)
     fh = models.DateTimeField(blank=True, null=True)
-
-    def __str__(self):
-        return '{}'.format(self.direccion_normalizada)
+    geom_3857 = models.PointField(blank=True, null=True, srid=3857)
 
     class Meta:
         managed = False
