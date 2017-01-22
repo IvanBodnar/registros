@@ -13,11 +13,7 @@ class Siniestros:
     def _filtrar_hechos(self):
         qs = Hechos.objects\
             .filter(anio__in=self.anios)\
-            .exclude(geom__isnull=True)\
-            .annotate(transform=Transform('geom', srid=3857))\
-            .all()
-        for q in qs:
-            q.geom = q.transform
+            .exclude(geom__isnull=True)
         return qs
 
     @staticmethod
@@ -28,6 +24,6 @@ class Siniestros:
 
     def siniestros_radio(self):
         qs_3857 = self._filtrar_hechos()
-        resultado = qs_3857.filter(geom__distance_lt=(self.punto_3857, self.radio))
+        resultado = qs_3857.filter(geom_3857__distance_lt=(self.punto_3857, self.radio))
         return resultado.values('direccion_normalizada', 'fecha', 'hora', 'tipo_calle', 'anio')
 
