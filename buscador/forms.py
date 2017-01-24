@@ -17,10 +17,11 @@ class CallesForm(forms.Form):
     calle1 = forms.CharField(max_length=60, widget=forms.TextInput(attrs={'id': 'calle1'}))
     calle2 = forms.CharField(max_length=60, widget=forms.TextInput(attrs={'id': 'calle2'}))
     radio = forms.IntegerField(min_value=10, max_value=1000)
-    años = forms.TypedMultipleChoiceField(choices=años_choices, coerce=int, empty_value=0,
-                                          widget=forms.CheckboxSelectMultiple)
+    anios = forms.TypedMultipleChoiceField(choices=años_choices, coerce=int, empty_value=2015,
+                                           widget=forms.CheckboxSelectMultiple)
 
-    def _calles_cleaner(self, cleaned):
+    def clean_calle1(self):
+        cleaned = self.cleaned_data['calle1'].lower()
         try:
             Calle(cleaned)
             new_calle = cleaned
@@ -28,16 +29,17 @@ class CallesForm(forms.Form):
             raise ValidationError(e.args[0])
         return new_calle
 
-    def clean_calle1(self):
-        cleaned = self.cleaned_data['calle1'].lower()
-        self._calles_cleaner(cleaned=cleaned)
-
     def clean_calle2(self):
         cleaned = self.cleaned_data['calle2'].lower()
-        self._calles_cleaner(cleaned=cleaned)
+        try:
+            Calle(cleaned)
+            new_calle = cleaned
+        except CalleNoExiste as e:
+            raise ValidationError(e.args[0])
+        return new_calle
 
     def clean(self):
-        cleaned_data = super().clean()
+        cleaned_data = super(CallesForm, self).clean()
         if cleaned_data:
             calle1 = cleaned_data['calle1'].lower()
             calle2 = cleaned_data['calle2'].lower()

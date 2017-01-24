@@ -30,8 +30,10 @@ class IngresarCalles(View):
             if bound_form.is_valid():
                 calle1 = bound_form.cleaned_data['calle1']
                 calle2 = bound_form.cleaned_data['calle2']
+                radio = bound_form.cleaned_data['radio']
+                anios = bound_form.cleaned_data['anios']
                 interseccion = Calle(calle1) + Calle(calle2)
-                siniestros = Siniestros(interseccion, 1000, [2013, 1014, 2015])
+                siniestros = Siniestros(interseccion, radio, anios)
 
                 return render(request, self.exito, context={'items': siniestros.siniestros_radio()})
 
