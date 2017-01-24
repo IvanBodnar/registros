@@ -1,13 +1,24 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from .models import Hechos
 from geocoder.helpers import Calle
 from geocoder.exceptions import CalleNoExiste, InterseccionNoExiste
 
 
 class CallesForm(forms.Form):
 
+    # Crea un qs con los valores unicos para el campo "anio".
+    años_hechos_qs = Hechos.objects.all().distinct('anio')
+
+    # Crea una lista de tuplas para usar como choices en el form field "años".
+    # Filtrar a partir de que año se quiere mostrar.
+    años_choices = [(ho.anio, ho.anio) for ho in años_hechos_qs if ho.anio >= 2010]
+
     calle1 = forms.CharField(max_length=60, widget=forms.TextInput(attrs={'id': 'calle1'}))
     calle2 = forms.CharField(max_length=60, widget=forms.TextInput(attrs={'id': 'calle2'}))
+    radio = forms.IntegerField(min_value=10, max_value=1000)
+    años = forms.TypedMultipleChoiceField(choices=años_choices, coerce=int, empty_value=0,
+                                          widget=forms.CheckboxSelectMultiple)
 
     def _calles_cleaner(self, cleaned):
         try:
