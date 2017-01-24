@@ -18,7 +18,7 @@ class CallesForm(forms.Form):
     calle2 = forms.CharField(max_length=60, widget=forms.TextInput(attrs={'id': 'calle2'}))
     radio = forms.IntegerField(min_value=10, max_value=1000)
     anios = forms.TypedMultipleChoiceField(choices=años_choices, coerce=int, empty_value=2015,
-                                           widget=forms.CheckboxSelectMultiple)
+                                           widget=forms.CheckboxSelectMultiple, label='Años')
 
     def clean_calle1(self):
         cleaned = self.cleaned_data['calle1'].lower()
