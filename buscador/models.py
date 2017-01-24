@@ -40,5 +40,5 @@ class Hechos(models.Model):
     geom_3857 = models.PointField(blank=True, null=True, srid=3857)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hechos'

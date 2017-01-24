@@ -1,6 +1,7 @@
 .idea/
 __pycache__/
 registros/environment/
+buscador/fixtures/
 *.sh
 *.pyc
 _settings.py
