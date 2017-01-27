@@ -12,12 +12,11 @@ body {
 }
 
 .container {
-  padding: 100px;
+  padding: 150px;
 }
 
 .form-signin {
-  max-width: 330px;
-
+  max-width: 400px;
   margin: 0 auto;
 
 }
@@ -27,11 +26,11 @@ body {
     margin-bottom: 100px;
 }
 
-.space {
-  padding: 15px;
-}
+.table_flow {
+    height: 600px;
+    overflow: auto;
+}​
 
 li label {
   margin-left: 5px;
-
 }
