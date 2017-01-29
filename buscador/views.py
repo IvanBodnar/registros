@@ -1,4 +1,5 @@
 import json
+import csv
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
@@ -34,6 +35,10 @@ class IngresarCalles(View):
                 anios = bound_form.cleaned_data['anios']
                 interseccion = Calle(calle1) + Calle(calle2)
                 siniestros = Siniestros(interseccion, radio, anios)
+                request.session['calle1'] = calle1
+                request.session['calle2'] = calle2
+                request.session['radio'] = radio
+                request.session['anios'] = anios
 
                 return render(request, self.exito, context={'items': siniestros.siniestros_radio()})
 
@@ -47,4 +52,26 @@ class IngresarCalles(View):
                           context={'form': self.form_class()})
 
 
+def retornar_csv(request):
+    calle1 = request.session['calle1']
+    calle2 = request.session['calle2']
+    radio = request.session['radio']
+    anios = request.session['anios']
 
+    nombre_csv = '{}_y_{}_{}mts'.format(calle1, calle2, radio)
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(nombre_csv)
+
+    interseccion = Calle(calle1) + Calle(calle2)
+    siniestros = Siniestros(interseccion, radio, anios)
+    columnas = siniestros.columnas
+    lista_diccionarios = [sin for sin in siniestros.siniestros_radio()]
+
+    writer = csv.DictWriter(response, fieldnames=columnas)
+    writer.writeheader()
+
+    for row in lista_diccionarios:
+        writer.writerow(row)
+
+    return response

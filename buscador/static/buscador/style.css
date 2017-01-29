@@ -36,5 +36,10 @@ li label {
 }
 
 #tabla {
+  margin-top: 50px;
+  padding: 50px;
+}
+
+#boton_csv {
   margin-top: 150px;
 }

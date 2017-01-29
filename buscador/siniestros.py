@@ -5,6 +5,8 @@ from django.contrib.gis.db.models.functions import Transform
 
 class Siniestros:
 
+    columnas = ['direccion_normalizada', 'fecha', 'hora', 'tipo_calle', 'anio']
+
     def __init__(self, punto, radio, anios):
         self.punto_3857 = self.punto_a_3857(punto)
         self.radio = radio
@@ -27,5 +29,5 @@ class Siniestros:
         resultado = qs_3857\
                     .filter(geom_3857__distance_lt=(self.punto_3857, self.radio))\
                     .order_by('anio', 'direccion_normalizada', 'fecha')
-        return resultado.values('direccion_normalizada', 'fecha', 'hora', 'tipo_calle', 'anio')
+        return resultado.values(*self.columnas)
 

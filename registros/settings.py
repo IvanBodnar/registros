@@ -129,6 +129,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+# Por defecto se va a almacenar la sesion en la base,
+# cambiar para otras opciones
+#SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
 # Para que funcionen los test
 class DisableMigrations(object):
 
