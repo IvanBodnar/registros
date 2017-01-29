@@ -14,13 +14,27 @@ class CallesForm(forms.Form):
     # Filtrar a partir de que año se quiere mostrar.
     años_choices = [(ho.anio, ho.anio) for ho in años_hechos_qs if ho.anio >= 2010]
 
-    calle1 = forms.CharField(max_length=60, widget=forms.TextInput(attrs={'id': 'calle1', 'class': 'form-control'}))
-    calle2 = forms.CharField(max_length=60, widget=forms.TextInput(attrs={'id': 'calle2', 'class': 'form-control'}))
-    radio = forms.IntegerField(min_value=10, max_value=1000,
-                               widget=forms.NumberInput(attrs={'id': 'radio', 'class': 'form-control'}))
-    anios = forms.TypedMultipleChoiceField(choices=años_choices, coerce=int, empty_value=2015,
-                                           widget=forms.CheckboxSelectMultiple(attrs={'id': 'anios', 'class': 'check'}),
-                                           label='Años')
+    calle1 = forms.CharField(max_length=60,
+                             label='Calle 1',
+                             widget=forms.TextInput(attrs={'id': 'calle1',
+                                                           'class': 'form-control',
+                                                           'placeholder': 'Ingrese primera calle'}))
+    calle2 = forms.CharField(max_length=60,
+                             label= 'Calle 2',
+                             widget=forms.TextInput(attrs={'id': 'calle2',
+                                                           'class': 'form-control',
+                                                           'placeholder': 'Ingrese segunda calle'}))
+    radio = forms.IntegerField(min_value=10,
+                               max_value=1000,
+                               label='Radio de Búsqueda',
+                               widget=forms.NumberInput(attrs={'id': 'radio',
+                                                               'class': 'form-control',
+                                                               'placeholder': 'En metros, Mín: 10, Máx: 1000'}))
+    anios = forms.TypedMultipleChoiceField(choices=años_choices,
+                                           label='Años',
+                                           coerce=int,
+                                           empty_value=2015,
+                                           widget=forms.CheckboxSelectMultiple(attrs={'id': 'anios'}))
 
     def clean_calle1(self):
         cleaned = self.cleaned_data['calle1'].lower()
