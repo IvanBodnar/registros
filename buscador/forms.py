@@ -7,13 +7,16 @@ from geocoder.exceptions import CalleNoExiste, InterseccionNoExiste
 
 class CallesForm(forms.Form):
 
-    # Crea un qs con los valores unicos para el campo "anio".
+    """Crea un qs con los valores unicos para el campo 'anio'."""
     años_hechos_qs = Hechos.objects.all().distinct('anio')
 
-    # Crea una lista de tuplas para usar como choices en el form field "años".
-    # Filtrar a partir de que año se quiere mostrar.
+    """
+    Crea una lista de tuplas para usar como choices en el form field "años".
+    Filtrar a partir de que año se quiere mostrar.
+    """
     años_choices = [(ho.anio, ho.anio) for ho in años_hechos_qs if ho.anio >= 2010]
 
+    """Campos"""
     calle1 = forms.CharField(max_length=60,
                              label='Calle 1',
                              widget=forms.TextInput(attrs={'id': 'calle1',
@@ -36,8 +39,9 @@ class CallesForm(forms.Form):
                                            empty_value=2015,
                                            widget=forms.CheckboxSelectMultiple(attrs={'id': 'anios'}))
 
+    """Valida si calle1 existe"""
     def clean_calle1(self):
-        cleaned = self.cleaned_data['calle1'].lower()
+        cleaned = self.cleaned_data['calle1']
         try:
             Calle(cleaned)
             new_calle = cleaned
@@ -45,6 +49,7 @@ class CallesForm(forms.Form):
             raise ValidationError(e.args[0])
         return new_calle
 
+    """Valida si calle2 existe"""
     def clean_calle2(self):
         cleaned = self.cleaned_data['calle2'].lower()
         try:
@@ -54,12 +59,12 @@ class CallesForm(forms.Form):
             raise ValidationError(e.args[0])
         return new_calle
 
+    """Valida si la intersección de calle1 y calle2 existe"""
     def clean(self):
         cleaned_data = super(CallesForm, self).clean()
-        if cleaned_data:
-            calle1 = cleaned_data['calle1'].lower()
-            calle2 = cleaned_data['calle2'].lower()
-
+        calle1 = cleaned_data.get('calle1', None)
+        calle2 = cleaned_data.get('calle2', None)
+        if calle1 and calle2:
             try:
                 Calle(calle1) + Calle(calle2)
             except InterseccionNoExiste as e:
