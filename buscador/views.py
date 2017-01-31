@@ -1,5 +1,6 @@
 import json
 import csv
+from datetime import date
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
@@ -66,7 +67,13 @@ def retornar_csv(request):
     interseccion = Calle(calle1) + Calle(calle2)
     siniestros = Siniestros(interseccion, radio, anios)
     columnas = siniestros.columnas
-    lista_diccionarios = [sin for sin in siniestros.siniestros_radio()]
+    lista_diccionarios = []
+    # Formatear fecha y participantes para el csv
+    for sin in siniestros.siniestros_radio():
+        sin['fecha'] = sin['fecha'].strftime('%d-%m-%Y')
+        if sin['participantes']:
+            sin['participantes'] = ' - '.join(sin['participantes'])
+        lista_diccionarios.append(sin)
 
     writer = csv.DictWriter(response, fieldnames=columnas)
     writer.writeheader()
