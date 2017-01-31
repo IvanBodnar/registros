@@ -27,6 +27,12 @@
                                     <h4 class="text-center">Tipo de Calle</h4>
                                 </th>
                                 <th class="bg-primary">
+                                    <h4 class="text-center">Participantes</h4>
+                                </th>
+                                <th class="bg-primary">
+                                    <h4 class="text-center">Causa</h4>
+                                </th>
+                                <th class="bg-primary">
                                     <h4 class="text-center">Año</h4>
                                 </th>
                             </tr>
@@ -37,6 +43,8 @@
                                 <td>{{ item.fecha|date:"d-m-Y" }}</td>
                                 <td>{{ item.hora|time:"H:i" }}</td>
                                 <td>{{ item.tipo_calle|title }}</td>
+                                <td>{{ item.participantes|default_if_none:''|join:' - ' }}</td>
+                                <td>{{ item.causa|title }}</td>
                                 <td>{{ item.anio }}</td>
                             </tr>
                         {% endfor %}

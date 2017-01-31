@@ -1,11 +1,10 @@
 from .models import Hechos
 from django.contrib.gis.geos import GEOSGeometry
-from django.contrib.gis.db.models.functions import Transform
 
 
 class Siniestros:
 
-    columnas = ['direccion_normalizada', 'fecha', 'hora', 'tipo_calle', 'anio']
+    columnas = ['direccion_normalizada', 'fecha', 'hora', 'tipo_calle', 'participantes', 'causa', 'anio']
 
     def __init__(self, punto, radio, anios):
         self.punto_3857 = self.punto_a_3857(punto)

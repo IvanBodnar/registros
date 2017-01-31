@@ -8,6 +8,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.gis.db import models
+from django.contrib.postgres.fields import ArrayField
 
 
 class Hechos(models.Model):
@@ -37,8 +38,64 @@ class Hechos(models.Model):
     cantidad_victimas = models.IntegerField(blank=True, null=True)
     anio = models.IntegerField(blank=True, null=True)
     fh = models.DateTimeField(blank=True, null=True)
+    comuna = models.IntegerField(blank=True, null=True)
+    participantes = ArrayField(models.CharField(max_length=100, blank=True, null=True))
     geom_3857 = models.PointField(blank=True, null=True, srid=3857)
+    causa = models.CharField(max_length=20, blank=True, null=True)
+
+    def __str__(self):
+        return '{}'.format(self.direccion_normalizada)
 
     class Meta:
         managed = True
         db_table = 'hechos'
+
+
+class Acusados(models.Model):
+    id_hecho = models.ForeignKey(Hechos, models.DO_NOTHING, db_column='id_hecho', blank=True, null=True)
+    rol = models.CharField(max_length=50, blank=True, null=True)
+    tipo = models.CharField(max_length=150, blank=True, null=True)
+    marca = models.CharField(max_length=50, blank=True, null=True)
+    modelo = models.CharField(max_length=50, blank=True, null=True)
+    colectivo = models.CharField(max_length=25, blank=True, null=True)
+    interno_colectivo = models.CharField(max_length=25, blank=True, null=True)
+    sexo = models.CharField(max_length=25, blank=True, null=True)
+    edad = models.IntegerField(blank=True, null=True)
+    id = models.IntegerField(primary_key=True)
+    vehiculo_numero = models.IntegerField(blank=True, null=True)
+    tipo_reclas_1 = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return '{}, {}'.format(self.sexo, self.edad)
+
+    class Meta:
+        managed = False
+        db_table = 'acusados'
+
+
+class Victimas(models.Model):
+    id_hecho = models.ForeignKey(Hechos, models.DO_NOTHING, db_column='id_hecho', blank=True, null=True)
+    causa = models.CharField(max_length=50, blank=True, null=True)
+    rol = models.CharField(max_length=50, blank=True, null=True)
+    tipo = models.CharField(max_length=150, blank=True, null=True)
+    marca = models.CharField(max_length=50, blank=True, null=True)
+    modelo = models.CharField(max_length=50, blank=True, null=True)
+    colectivo = models.CharField(max_length=25, blank=True, null=True)
+    interno_colectivo = models.CharField(max_length=25, blank=True, null=True)
+    sexo = models.CharField(max_length=25, blank=True, null=True)
+    edad = models.IntegerField(blank=True, null=True)
+    sumario = models.IntegerField(blank=True, null=True)
+    id = models.IntegerField(primary_key=True)
+    tipo_recod = models.CharField(max_length=50, blank=True, null=True)
+    franja_edad = models.IntegerField(blank=True, null=True)
+    ubic_vehicm = models.CharField(max_length=50, blank=True, null=True)
+    franja_edad_itf = models.IntegerField(blank=True, null=True)
+    vehiculo_numero = models.IntegerField(blank=True, null=True)
+    tipo_reclas_1 = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return '{}, {}'.format(self.sexo, self.edad)
+
+    class Meta:
+        managed = False
+        db_table = 'victimas'
