@@ -71,7 +71,7 @@ def retornar_csv(request):
     for sin in siniestros.siniestros_radio():
         sin['fecha'] = sin['fecha'].strftime('%d-%m-%Y')
         if sin['participantes']:
-            sin['participantes'] = ' - '.join(sin['participantes'])
+            sin['participantes'] = ' - '.join([s for s in sin['participantes'] if s])
         lista_diccionarios.append(sin)
 
     writer = csv.DictWriter(response, fieldnames=columnas)
