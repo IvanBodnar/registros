@@ -12,13 +12,17 @@
             <div class="col-md-offset-4 col-md-4">
                 <form  action="{% url 'buscador_ingresar_calle' %}" method="get">
                     <!--{% csrf_token %}-->
-                    {{ form.non_field_errors }}
+                    {% for error in form.non_field_errors %}
+                    <div class="{% if error %}alert alert-danger{% endif %}">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
                     {% for field in form %}
-                        <div class="form-group {%if field.errors %}has-error has-feedback{%endif%}">
+                        <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
                             {{ field.errors }}
-                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                            {{ field }}
                         </div>
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
                     {% endfor %}
                         <button type="submit" class="btn btn-primary btn-lg btn-block">Buscar</button>
                 </form>
