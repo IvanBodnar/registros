@@ -40,7 +40,7 @@ class IngresarCalles(View):
                 request.session['radio'] = radio
                 request.session['anios'] = anios
 
-                return render(request, self.exito, context={'items': siniestros.siniestros_radio()})
+                return render(request, self.exito, context={'items': siniestros.siniestros_queryset()})
 
             else:
                 return render(request=request,
@@ -65,10 +65,10 @@ def retornar_csv(request):
 
     interseccion = Calle(calle1) + Calle(calle2)
     siniestros = Siniestros(interseccion, radio, anios)
-    columnas = siniestros.columnas
+    columnas = siniestros.campos
     lista_diccionarios = []
     # Formatear fecha y participantes para el csv
-    for sin in siniestros.siniestros_radio():
+    for sin in siniestros.siniestros_queryset():
         sin['fecha'] = sin['fecha'].strftime('%d-%m-%Y')
         if sin['participantes']:
             sin['participantes'] = ' - '.join([s for s in sin['participantes'] if s])
