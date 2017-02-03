@@ -7,57 +7,67 @@
 {% block content %}
 
 
-    <div class="container" id="tabla">
-        <div class="row">
-            <div class="col-xs-12 col-md-12">
-                <div class="table_flow">
+        <div class="container" id="tabla">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tabla_pane" data-toggle="tab">Tabla</a></li>
+                <li><a href="#profile" data-toggle="tab">Profile</a></li>
+            </ul>
+            <!-- Tab pane tabla -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="tabla_pane">
+                    <!--Tabla-->
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <div class="table_flow">
+                                <table class="table table-striped table-bordered table-hover table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th class="bg-primary">
+                                                <h4 class="text-center">Lugar</h4>
+                                            </th>
+                                            <th class="bg-primary hidden-xs">
+                                                <h4 class="text-center">Fecha</h4>
+                                            </th>
+                                            <th class="bg-primary hidden-xs">
+                                                <h4 class="text-center">Hora</h4>
+                                            </th>
+                                            <th class="bg-primary hidden-xs">
+                                                <h4 class="text-center">Tipo de Calle</h4>
+                                            </th>
+                                            <th class="bg-primary hidden-xs">
+                                                <h4 class="text-center">Participantes</h4>
+                                            </th>
+                                            <th class="bg-primary hidden-xs">
+                                                <h4 class="text-center">Causa</h4>
+                                            </th>
+                                            <th class="bg-primary">
+                                                <h4 class="text-center">Año</h4>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    {% for item in items %}
+                                        <tr>
+                                            <td>{{ item.direccion_normalizada|title }}</td>
+                                            <td class="hidden-xs">{{ item.fecha|date:"d-m-Y" }}</td>
+                                            <td class="hidden-xs">{{ item.hora|time:"H:i" }}</td>
+                                            <td class="hidden-xs">{{ item.tipo_calle|title }}</td>
+                                            <td class="hidden-xs">{{ item.participantes|default_if_none:''|join:' - ' }}</td>
+                                            <td class="hidden-xs">{{ item.causa|title }}</td>
+                                            <td>{{ item.anio }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
 
-                    <table class="table table-striped table-bordered table-hover table-condensed">
-                        <thead>
-                            <tr>
-                                <th class="bg-primary">
-                                    <h4 class="text-center">Lugar</h4>
-                                </th>
-                                <th class="bg-primary hidden-xs">
-                                    <h4 class="text-center">Fecha</h4>
-                                </th>
-                                <th class="bg-primary hidden-xs">
-                                    <h4 class="text-center">Hora</h4>
-                                </th>
-                                <th class="bg-primary hidden-xs">
-                                    <h4 class="text-center">Tipo de Calle</h4>
-                                </th>
-                                <th class="bg-primary hidden-xs">
-                                    <h4 class="text-center">Participantes</h4>
-                                </th>
-                                <th class="bg-primary hidden-xs">
-                                    <h4 class="text-center">Causa</h4>
-                                </th>
-                                <th class="bg-primary">
-                                    <h4 class="text-center">Año</h4>
-                                </th>
-                            </tr>
-                        </thead>
-                        {% for item in items %}
-                            <tr>
-                                <td>{{ item.direccion_normalizada|title }}</td>
-                                <td class="hidden-xs">{{ item.fecha|date:"d-m-Y" }}</td>
-                                <td class="hidden-xs">{{ item.hora|time:"H:i" }}</td>
-                                <td class="hidden-xs">{{ item.tipo_calle|title }}</td>
-                                <td class="hidden-xs">{{ item.participantes|default_if_none:''|join:' - ' }}</td>
-                                <td class="hidden-xs">{{ item.causa|title }}</td>
-                                <td>{{ item.anio }}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-
-                </div>
-                <div id="boton_csv">
-                    <a href="{% url 'retornar_csv' %}"><button type="submit" class="btn btn-primary btn-lg btn-block">
-                    Bajar CSV</button></a>
+                            </div>
+                             <div id="boton_csv">
+                                <a href="{% url 'retornar_csv' %}"><button type="submit" class="btn btn-primary btn-lg btn-block">
+                                Bajar CSV</button></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 {% endblock %}
