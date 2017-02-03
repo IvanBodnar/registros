@@ -32,35 +32,29 @@ class Siniestros:
         p_3857.transform(3857)
         return p_3857
 
-    def _filtrar_hechos(self):
+    def _filtrar_siniestros(self):
         """
-        Realiza búsqueda filtrando por años y omitiendo los siniestros con
-        geometría nula.
+        Realiza búsqueda con parámetros:
+        - Filtro por años ingresados
+        - Filtra siniestros con geometría nula
+        - Busca los siniestros dentro del radio ingresado
+        - Ordena por año, dirección y fecha
         :return: queryset
         """
         qs = Hechos.objects\
             .filter(anio__in=self.anios)\
-            .exclude(geom__isnull=True)
-        return qs
-
-    def _siniestros_radio(self):
-        """
-        Realiza búsqueda de los siniestros devueltos por _filtrar_hechos() que
-        caen dentro del radio especificado.
-        :return: queryset
-        """
-        qs_3857 = self._filtrar_hechos()
-        siniestros_queryset = qs_3857 \
+            .exclude(geom__isnull=True) \
             .filter(geom_3857__distance_lt=(self.punto_3857, self.radio)) \
             .order_by('anio', 'direccion_normalizada', 'fecha')
-        return siniestros_queryset
+        return qs
 
     def siniestros_queryset(self):
         """
-        Filtra por los campos especificados en variable 'campos' y retorna el queryset.
-        :return: queryset
+        Filtra por los campos especificados en variable 'campos' y retorna el queryset.values()
+        (queryset con diccionarios como elementos en vez de objetos).
+        :return: queryset.values()
         """
-        qs = self._siniestros_radio()
+        qs = self._filtrar_siniestros()
         return qs.values(*self.campos)
 
     def siniestros_geojson(self):
@@ -68,7 +62,7 @@ class Siniestros:
         Devuelve geojson con los campos especificados en variable 'campos'.
         :return: geojson
         """
-        siniestros_qs = self._siniestros_radio()
+        siniestros_qs = self._filtrar_siniestros()
         geojson = serialize('geojson', siniestros_qs,
                             geometry_field='geom',
                             fields=self.campos)
