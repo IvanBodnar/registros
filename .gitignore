@@ -2,6 +2,7 @@
 __pycache__/
 registros/environment/
 buscador/fixtures/
+shell.txt
 *.sh
 *.pyc
 _settings.py
