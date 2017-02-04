@@ -29,7 +29,7 @@ class CallesForm(forms.Form):
                                                            'placeholder': 'Ingrese segunda calle'}))
     radio = forms.IntegerField(min_value=10,
                                max_value=1000,
-                               label='Radio de Búsqueda',
+                               label='Distancia',
                                widget=forms.NumberInput(attrs={'id': 'radio',
                                                                'class': 'form-control',
                                                                'placeholder': 'En metros, Mín: 10, Máx: 1000'}))

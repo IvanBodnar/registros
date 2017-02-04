@@ -1,8 +1,8 @@
 
 var lista_calles;
 
-// Retrieves array of street names
-// and stores it in var lista_calles
+// Recupera un array de nombres de calles
+// y lo almacena en var lista_calles
 $.ajax({
     type: 'GET',
     url: '/buscador/calles/',
@@ -13,7 +13,7 @@ $.ajax({
     }
 })
 
-// Autocomplete for calle1 and calle2 fields
+// Autocomplete para campos calle1 y calle2
 $(function () {
   $('#calle1').autocomplete({
     source: JSON.parse(lista_calles),

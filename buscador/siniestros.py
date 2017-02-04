@@ -44,7 +44,7 @@ class Siniestros:
         qs = Hechos.objects\
             .filter(anio__in=self.anios)\
             .exclude(geom__isnull=True) \
-            .filter(geom_3857__distance_lt=(self.punto_3857, self.radio)) \
+            .filter(geom_3857__dwithin=(self.punto_3857, self.radio)) \
             .order_by('anio', 'direccion_normalizada', 'fecha')
         return qs
 

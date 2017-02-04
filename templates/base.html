@@ -13,6 +13,9 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'buscador/style.css' %}" />
+        <!--Leaflet-->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+
         <title>
             {% block title %}
                 Buscador
@@ -41,9 +44,10 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
                 crossorigin="anonymous">
         </script>
+        <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
         <!--local scripts-->
         <script src="{% static 'buscador/autocomplete_calles.js' %}"></script>
         <script src="{% static 'buscador/helpers.js' %}"></script>
-
+        <script src="{% static 'buscador/map.js' %}"></script>
     </body>
 </html>

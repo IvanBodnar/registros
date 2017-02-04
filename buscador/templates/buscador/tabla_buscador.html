@@ -11,7 +11,7 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#tabla_pane" data-toggle="tab">Tabla</a></li>
-                <li><a href="#profile" data-toggle="tab">Profile</a></li>
+                <li><a href="#mapa_pane" data-toggle="tab" id="mapa_tab">Mapa</a></li>
             </ul>
             <!-- Tab pane tabla -->
             <div class="tab-content">
@@ -67,7 +67,14 @@
                         </div>
                     </div>
                 </div>
+                <!--Mapa-->
+            <div class="tab-pane" id="mapa_pane">
+                <div id="map" style="height: 600px;"></div>
+            </div>
             </div>
         </div>
+        <script>
+            var geojson = '{{ geojson|escapejs }}';
+        </script>
 
 {% endblock %}

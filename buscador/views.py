@@ -40,7 +40,8 @@ class IngresarCalles(View):
                 request.session['radio'] = radio
                 request.session['anios'] = anios
 
-                return render(request, self.exito, context={'items': siniestros.siniestros_queryset()})
+                return render(request, self.exito, context={'items': siniestros.siniestros_queryset(),
+                                                            'geojson': siniestros.siniestros_geojson()})
 
             else:
                 return render(request=request,
