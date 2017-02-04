@@ -1,4 +1,6 @@
-var map = L.map('map').setView([-34.615715, -58.451204], 12);
+var map = L.map('map', {
+    maxZoom: 18
+}).setView([-34.615715, -58.451204], 12);
 
 // Levanta y parsea la var geojson de tabla_buscador.html,
 // la cual tiene el geojson con los siniestros que vienen en
@@ -23,8 +25,9 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(map);
 })
 
-
-function onEachFeature(feature, layer) {
+// Agrega un popup con algunas propiedades
+// a cada feature de geojson
+function agregar_popup(feature, layer) {
     if (feature.properties) {
         var ft = feature.properties;
         layer.bindPopup(ft.causa.bold().fontcolor('red').fontsize(3).toUpperCase() + '<br>'
@@ -35,11 +38,18 @@ function onEachFeature(feature, layer) {
 };
 
 
-// Agregar el geojson como capa al mapa
-L.geoJSON(gj, {
-    onEachFeature: onEachFeature
-}).addTo(map);
+// Convierte el geojson en capa de leaflet
+// y y pasar cada elemento por la funcion para
+// agregar los popups
+leaf_geoj = L.geoJSON(gj, {
+    onEachFeature: agregar_popup
+})
 
+// Agregar leaf_geoj a markercluster
+// y la capa de markercluster al mapa
+var markers = L.markerClusterGroup();
+markers.addLayer(leaf_geoj);
+map.addLayer(markers);
 
 
 // Mapa de OSM
