@@ -5,7 +5,7 @@ var map = L.map('map').setView([-34.615715, -58.451204], 12);
 // el contexto.
 var gj = JSON.parse(geojson);
 
-// 'map.invalidateState()': 'Hack para que renderice bien el mapa base.
+// 'map.invalidateState()': Hack para que renderice bien el mapa base.
 // shown.bs.tab es un evento del pugin tab de bootstrap,
 // que se dispara despues de que la tab se muestra.
 $("#mapa_tab").on('shown.bs.tab', function() {
@@ -23,8 +23,23 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(map);
 })
 
+
+function onEachFeature(feature, layer) {
+    if (feature.properties) {
+        var ft = feature.properties;
+        layer.bindPopup(ft.causa.bold().fontcolor('red').fontsize(3).toUpperCase() + '<br>'
+                        + 'Lugar: ' + ft.direccion_normalizada + '<br>'
+                        + 'Fecha: ' + ft.fecha + '<br>'
+                        + 'Participantes: ' + ft.participantes + '<br>');
+    }
+};
+
+
 // Agregar el geojson como capa al mapa
-L.geoJSON(gj).addTo(map);
+L.geoJSON(gj, {
+    onEachFeature: onEachFeature
+}).addTo(map);
+
 
 
 // Mapa de OSM
