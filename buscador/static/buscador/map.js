@@ -2,6 +2,7 @@ var map = L.map('map', {
     maxZoom: 18
 }).setView([-34.615715, -58.451204], 12);
 
+//
 // Levanta y parsea la var geojson de tabla_buscador.html,
 // la cual tiene el geojson con los siniestros que vienen en
 // el contexto.
