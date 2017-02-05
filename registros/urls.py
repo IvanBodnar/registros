@@ -16,8 +16,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from buscador import urls as buscador_urls
+from user import urls as user_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^buscador/', include(buscador_urls)),
+    url(r'^user/', include(user_urls)),
 ]

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'widget_tweaks',
     'buscador',
     'geocoder',
     'user',
@@ -145,3 +146,5 @@ class DisableMigrations(object):
         return "notmigrations"
 
 MIGRATION_MODULES = DisableMigrations()
+
+LOGIN_REDIRECT_URL = '/buscador/'

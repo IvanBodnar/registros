@@ -3,11 +3,14 @@ import csv
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CallesForm
 from geocoder.helpers import get_calles, Calle
 from .siniestros import Siniestros
 
 
+@login_required
 def ajax_calles(request):
     """
     Retorna json con los nombres de las calles para pasar
@@ -18,7 +21,7 @@ def ajax_calles(request):
     return HttpResponse(json.dumps(get_calles()))
 
 
-class IngresarCalles(View):
+class IngresarCalles(LoginRequiredMixin, View):
 
     form_class = CallesForm
     template_name = 'buscador/forma_buscador.html'
@@ -53,6 +56,7 @@ class IngresarCalles(View):
                           context={'form': self.form_class()})
 
 
+@login_required
 def retornar_csv(request):
     calle1 = request.session['calle1']
     calle2 = request.session['calle2']
