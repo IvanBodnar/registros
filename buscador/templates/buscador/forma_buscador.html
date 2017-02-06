@@ -14,7 +14,7 @@
                     <!--{% csrf_token %}-->
                     {% for error in form.non_field_errors %}
                     <div class="{% if error %}alert alert-danger{% endif %}">
-                        {{ error }}
+                       <p class="text-center">{{ error }}</p>
                     </div>
                     {% endfor %}
                     {% for field in form %}

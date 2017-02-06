@@ -21,5 +21,5 @@ from user import urls as user_urls
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^buscador/', include(buscador_urls)),
-    url(r'^user/', include(user_urls)),
+    url(r'^', include(user_urls)),
 ]

@@ -1,7 +1,19 @@
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.forms import AuthenticationForm
+
+AuthenticationForm.error_messages = error_messages = {
+        'invalid_login': (
+            "Por favor ingrese usuario y contraseña correctos. Tenga en cuenta que ambos "
+            "campos distinguen mayúsculas y minúsculas."
+        ),
+        'inactive': ("Esta cuenta se encuentra inactiva."),
+    }
 
 urlpatterns = [
-    url(r'^login/$', auth_views.login, {'template_name': 'user/login.html'}, name='login'),
+    url(r'^login/$', auth_views.login,
+        {'template_name': 'user/login.html',
+         'extra_context': {'next': 'buscador_ingresar_calle'}},
+        name='login'),
     url(r'^logout/$', auth_views.logout_then_login, name='logout'),
 ]

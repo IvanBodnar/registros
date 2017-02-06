@@ -147,4 +147,8 @@ class DisableMigrations(object):
 
 MIGRATION_MODULES = DisableMigrations()
 
-LOGIN_REDIRECT_URL = '/buscador/'
+LOGIN_URL = 'login'
+
+LOGOUT_URL = 'logout'
+
+LOGIN_REDIRECT_URL = 'buscador_ingresar_calle'
