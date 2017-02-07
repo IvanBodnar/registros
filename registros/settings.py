@@ -152,3 +152,9 @@ LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 
 LOGIN_REDIRECT_URL = 'buscador_ingresar_calle'
+
+# Expirar la sesion cuando cierra el navegador
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Expirar la sesion en una hora
+SESSION_COOKIE_AGE = 3600
