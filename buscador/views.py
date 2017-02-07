@@ -28,6 +28,7 @@ class IngresarCalles(LoginRequiredMixin, View):
     exito = 'buscador/tabla_buscador.html'
 
     def get(self, request):
+
         if 'calle1' and 'calle2' in request.GET:
             bound_form = self.form_class(request.GET)
 
