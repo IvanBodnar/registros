@@ -17,18 +17,18 @@ class Siniestros:
         :param radio: int representando el radio de búsqueda en metros.
         :param anios: list de int representando los años a buscar.
         """
+        self.punto_4326 = GEOSGeometry(punto, srid=4326)
         self.punto_3857 = self.punto_a_3857(punto)
         self.radio = radio
         self.anios = anios
 
-    @staticmethod
-    def punto_a_3857(punto):
+    def punto_a_3857(self, punto):
         """
         Transforma el punto ingresado de srid 4236 a srid 3857 (Web Mercator).
         :param punto: punto en wkt srid 4326: 'POINT(-58.4756632814352 -34.6565433690812)'.
         :return: wkt srid 3857
         """
-        p_3857 = GEOSGeometry(punto, srid=4326)
+        p_3857 = self.punto_4326
         p_3857.transform(3857)
         return p_3857
 

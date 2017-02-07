@@ -6,8 +6,9 @@ from django.views.generic import View
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CallesForm
-from geocoder.helpers import get_calles, Calle
 from .siniestros import Siniestros
+from geocoder.helpers import get_calles, Calle
+from user.models import UserStats
 
 
 @login_required
@@ -30,19 +31,37 @@ class IngresarCalles(LoginRequiredMixin, View):
     def get(self, request):
 
         if 'calle1' and 'calle2' in request.GET:
+            # Recolectar forma, usuario y sesión
             bound_form = self.form_class(request.GET)
+            user = request.user
+            session = request.session
 
             if bound_form.is_valid():
+                # Levantar los datos de la forma
                 calle1 = bound_form.cleaned_data['calle1']
                 calle2 = bound_form.cleaned_data['calle2']
                 radio = bound_form.cleaned_data['radio']
                 anios = bound_form.cleaned_data['anios']
+
+                # Instanciar interseccion y siniestros
                 interseccion = Calle(calle1) + Calle(calle2)
                 siniestros = Siniestros(interseccion, radio, anios)
-                request.session['calle1'] = calle1
-                request.session['calle2'] = calle2
-                request.session['radio'] = radio
-                request.session['anios'] = anios
+
+                # Cargar datos en la sesión
+                session['calle1'] = calle1
+                session['calle2'] = calle2
+                session['radio'] = radio
+                session['anios'] = anios
+
+                # Instanciar y guardar estadísticas de uso
+                user_stats = UserStats(user=user,
+                                       session_key=session.session_key,
+                                       calle1=calle1,
+                                       calle2=calle2,
+                                       radio=radio,
+                                       anios=anios,
+                                       geom=siniestros.punto_4326)
+                user_stats.save()
 
                 return render(request, self.exito, context={'items': siniestros.siniestros_queryset(),
                                                             'geojson': siniestros.siniestros_geojson()})
