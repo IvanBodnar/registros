@@ -55,7 +55,17 @@ class Siniestros:
         :return: queryset.values()
         """
         qs = self._filtrar_siniestros()
-        return qs.values(*self.campos)
+        values = qs.values(*self.campos)
+        # Formatear campos
+        for sin in values:
+            # Evitar campos nulos
+            try:
+                sin['fecha'] = sin['fecha'].strftime('%d-%m-%Y')
+                sin['participantes'] = ' - '.join([s for s in sin['participantes'] if s])
+            except TypeError:
+                pass
+            sin['año'] = sin.pop('anio')
+        return values
 
     def siniestros_geojson(self):
         """

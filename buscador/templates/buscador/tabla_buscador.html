@@ -49,12 +49,12 @@
                                     {% for item in items %}
                                         <tr>
                                             <td>{{ item.direccion_normalizada|title }}</td>
-                                            <td class="hidden-xs">{{ item.fecha|date:"d-m-Y" }}</td>
+                                            <td class="hidden-xs">{{ item.fecha }}</td>
                                             <td class="hidden-xs">{{ item.hora|time:"H:i" }}</td>
                                             <td class="hidden-xs">{{ item.tipo_calle|title }}</td>
-                                            <td class="hidden-xs">{{ item.participantes|default_if_none:''|join:' - ' }}</td>
+                                            <td class="hidden-xs">{{ item.participantes|default_if_none:'' }}</td>
                                             <td class="hidden-xs">{{ item.causa|title }}</td>
-                                            <td>{{ item.anio }}</td>
+                                            <td>{{ item.año }}</td>
                                         </tr>
                                     {% endfor %}
                                 </table>

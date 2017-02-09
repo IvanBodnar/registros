@@ -90,19 +90,12 @@ def retornar_csv(request):
 
     interseccion = Calle(calle1) + Calle(calle2)
     siniestros = Siniestros(interseccion, radio, anios)
-    columnas = siniestros.campos
-    lista_diccionarios = []
-    # Formatear fecha y participantes para el csv
-    for sin in siniestros.siniestros_queryset():
-        sin['fecha'] = sin['fecha'].strftime('%d-%m-%Y')
-        if sin['participantes']:
-            sin['participantes'] = ' - '.join([s for s in sin['participantes'] if s])
-        lista_diccionarios.append(sin)
+    columnas = [campo.replace('anio', 'año') for campo in siniestros.campos]
 
     writer = csv.DictWriter(response, fieldnames=columnas)
     writer.writeheader()
 
-    for row in lista_diccionarios:
+    for row in siniestros.siniestros_queryset():
         writer.writerow(row)
 
     return response
