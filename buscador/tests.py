@@ -2,15 +2,13 @@ from django.test import TestCase
 from .siniestros import Siniestros
 
 
-class PruebaTest(TestCase):
-    """Carga fixture en json con algunos datos"""
-    fixtures = ['data.json']
+class SiniestrosTest(TestCase):
 
-    def test_prueba(self):
-        """
-        Testea que devuelva el punto que esta a menos
-        de 60 metros.
-        """
-        s = Siniestros('POINT(-58.437287 -34.586525)', 60, [2015])
-        self.assertEqual(s.siniestros_queryset()[0]['direccion_normalizada'], "humboldt y cabrera, jose a.")
+    s = Siniestros('POINT (-58.44701261 -34.62288732)', 10, [2015])
+    fixtures = ['data1.json']
 
+    def test_transforma_punto_de_4326_a_3857(self):
+        self.assertEqual(str(self.s.punto_a_3857()), 'SRID=3857;POINT (-6506291.682133242 -4112750.400425036)')
+
+    def test_siniestros_queryset(self):
+        self.assertEqual(self.s.siniestros_queryset()[0]['direccion_normalizada'], "rivadavia av. y paysandu")
