@@ -38,8 +38,8 @@ class IngresarCalles(LoginRequiredMixin, View):
 
             if bound_form.is_valid():
                 # Levantar los datos de la forma
-                calle1 = bound_form.cleaned_data['calle1']
-                calle2 = bound_form.cleaned_data['calle2']
+                calle1 = bound_form.cleaned_data['calle1'].lower()
+                calle2 = bound_form.cleaned_data['calle2'].lower()
                 radio = bound_form.cleaned_data['radio']
                 anios = bound_form.cleaned_data['anios']
 
