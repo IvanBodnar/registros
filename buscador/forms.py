@@ -41,7 +41,7 @@ class CallesForm(forms.Form):
 
     """Valida si calle1 existe"""
     def clean_calle1(self):
-        cleaned = self.cleaned_data['calle1']
+        cleaned = self.cleaned_data['calle1'].lower()
         try:
             Calle(cleaned)
             new_calle = cleaned
