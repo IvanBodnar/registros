@@ -1,5 +1,0 @@
-from geocoder.helpers import Calle
-from buscador.siniestros import Siniestros
-
-i = Calle('hubac') + Calle('white')
-s = Siniestros(i, 500, [2013,2014,2015])

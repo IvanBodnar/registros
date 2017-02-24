@@ -1,2 +1,0 @@
-su:
-gum(dosp90
