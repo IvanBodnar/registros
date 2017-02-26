@@ -14,6 +14,8 @@ class UserStats(models.Model):
     anios = ArrayField(models.IntegerField(), null=True)
     geom = models.PointField(null=True, srid=4326)
 
+    def __str__(self):
+        return '{} y {}'.format(self.calle1, self.calle2)
 
 
 
