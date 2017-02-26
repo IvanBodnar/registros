@@ -65,6 +65,8 @@ class Siniestros:
                 sin['participantes'] = ' - '.join([s for s in sin['participantes'] if s])
             except TypeError:
                 pass
+            except AttributeError:
+                pass
             sin['año'] = sin.pop('anio')
         return values
 
