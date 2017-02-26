@@ -1,3 +1,4 @@
+import json
 from .models import Hechos
 from django.contrib.gis.geos import GEOSGeometry
 from django.core.serializers import serialize
@@ -18,11 +19,11 @@ class Siniestros:
         :param anios: list de int representando los años a buscar.
         """
         self.punto_4326 = GEOSGeometry(punto, srid=4326)
-        self.punto_3857 = self.punto_a_3857()
+        self.punto_3857 = self.punto_a_3857(punto)
         self.radio = radio
         self.anios = anios
 
-    def punto_a_3857(self):
+    def punto_a_3857(self, punto):
         """
         Transforma el punto ingresado de srid 4236 a srid 3857 (Web Mercator).
         :param punto: punto en wkt srid 4326: 'POINT(-58.4756632814352 -34.6565433690812)'.
@@ -72,8 +73,16 @@ class Siniestros:
         Devuelve geojson con los campos especificados en variable 'campos'.
         :return: geojson
         """
+        resultado = dict()
         siniestros_qs = self._filtrar_siniestros()
-        geojson = serialize('geojson', siniestros_qs,
-                            geometry_field='geom',
-                            fields=self.campos)
-        return geojson
+        años = [item.anio for item in siniestros_qs.distinct('anio')]
+        for año in años:
+            resultado[str(año)] = serialize('geojson',
+                                            siniestros_qs.filter(anio=año),
+                                            geometry_field='geom',
+                                            fields=self.campos)
+
+        # geojson = serialize('geojson', siniestros_qs,
+        #                     geometry_field='geom',
+        #                     fields=self.campos)
+        return json.dumps(resultado)

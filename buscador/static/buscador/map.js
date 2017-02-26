@@ -17,7 +17,6 @@ $("#mapa_tab").on('shown.bs.tab', function() {
     map.invalidateSize();
 });
 
-
 // Mapa de MapBox
 $(function() {
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -40,19 +39,55 @@ function agregar_popup(feature, layer) {
     }
 };
 
+var mcg = L.markerClusterGroup();
+var overlays = {};
+var subs = {}
+
+for (var key in gj) {
+    var año = JSON.parse(gj[key]);
+    var lay_geojson = L.geoJSON(año, {
+                                onEachFeature: agregar_popup
+                                })
+    var subgroup = L.featureGroup.subGroup(mcg, lay_geojson);
+    subgroup.addTo(map);
+    overlays[key] = subgroup;
+    subs[key] = subgroup;
+}
+
+mcg.addTo(map);
+
+L.control.layers(null, overlays).addTo(map);
+
+for (var key in subs) {
+    subs[key].addTo(map);
+}
+
+console.log(subgroup)
 
 // Convierte el geojson en capa de leaflet
 // y y pasar cada elemento por la funcion para
 // agregar los popups
-leaf_geoj = L.geoJSON(gj, {
-    onEachFeature: agregar_popup
-})
+//leaf_geoj = L.geoJSON(gj, {
+//    onEachFeature: agregar_popup
+//})
 
 // Agregar leaf_geoj a markercluster
 // y la capa de markercluster al mapa
-var markers = L.markerClusterGroup();
-markers.addLayer(leaf_geoj);
-map.addLayer(markers);
+//var markers = L.markerClusterGroup();
+//markers.addLayer(leaf_geoj);
+//map.addLayer(markers);
+
+// Crear layer
+//var layer_prueba = new L.LayerGroup();
+//markers.addTo(layer_prueba);
+//
+//map.addLayer(layer_prueba);
+
+//var overlays = {
+//		"Layer": markers
+//};
+//
+//L.control.layers(null, overlays).addTo(map);
 
 
 // Mapa de OSM
