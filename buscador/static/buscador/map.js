@@ -1,7 +1,7 @@
 var map = L.map('map', {
     zoom: 12,
     center: [-34.615715, -58.451204],
-    maxZoom: 21
+    maxZoom: 19
 })//.setView([-34.615715, -58.451204], 12);
 
 //
@@ -32,10 +32,16 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 function agregar_popup(feature, layer) {
     if (feature.properties) {
         var ft = feature.properties;
+        // Reemplazar null por 'Sin Datos'
+        for (var key in ft) {
+            if (!ft[key]) {
+                ft[key] = 'Sin Datos';
+            }
+        }
         layer.bindPopup(ft.causa.bold().fontcolor('red').fontsize(3).toUpperCase() + '<br>'
                         + 'Lugar: ' + ft.direccion_normalizada + '<br>'
-                        + 'Fecha: ' + ft.fecha + '<br>'
-                        + 'Participantes: ' + ft.participantes + '<br>');
+                        + 'Fecha: ' + moment(ft.fecha).format('DD-MM-YYYY') + '<br>'
+                        + 'Participantes: ' + ft.participantes.replace(/\[|\]|\"/g, '') + '<br>');
     }
 };
 
