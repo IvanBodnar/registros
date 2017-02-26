@@ -39,55 +39,31 @@ function agregar_popup(feature, layer) {
     }
 };
 
+// Crea instancia de markerClusterGroup y la agrega al mapa
 var mcg = L.markerClusterGroup();
+mcg.addTo(map);
+// Crear objeto para contener las capas
 var overlays = {};
-var subs = {}
 
+// Iterar sobre el json, crear las capas de L.geoJSON, agregarles
+// los popups, agregar las capas a los subGroups y a overlays
 for (var key in gj) {
     var año = JSON.parse(gj[key]);
-    var lay_geojson = L.geoJSON(año, {
-                                onEachFeature: agregar_popup
-                                })
-    var subgroup = L.featureGroup.subGroup(mcg, lay_geojson);
-    subgroup.addTo(map);
+    var geojson_layer = L.geoJSON(año, {
+                                  onEachFeature: agregar_popup
+                                 })
+    var subgroup = L.featureGroup.subGroup(mcg);
+    geojson_layer.addTo(subgroup);
     overlays[key] = subgroup;
-    subs[key] = subgroup;
 }
 
-mcg.addTo(map);
-
+// Agregar las capas al control de capas
 L.control.layers(null, overlays).addTo(map);
 
-for (var key in subs) {
-    subs[key].addTo(map);
+// Agregar cada capa al mapa
+for (var key in overlays) {
+    overlays[key].addTo(map);
 }
-
-console.log(subgroup)
-
-// Convierte el geojson en capa de leaflet
-// y y pasar cada elemento por la funcion para
-// agregar los popups
-//leaf_geoj = L.geoJSON(gj, {
-//    onEachFeature: agregar_popup
-//})
-
-// Agregar leaf_geoj a markercluster
-// y la capa de markercluster al mapa
-//var markers = L.markerClusterGroup();
-//markers.addLayer(leaf_geoj);
-//map.addLayer(markers);
-
-// Crear layer
-//var layer_prueba = new L.LayerGroup();
-//markers.addTo(layer_prueba);
-//
-//map.addLayer(layer_prueba);
-
-//var overlays = {
-//		"Layer": markers
-//};
-//
-//L.control.layers(null, overlays).addTo(map);
 
 
 // Mapa de OSM

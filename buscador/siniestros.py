@@ -70,19 +70,21 @@ class Siniestros:
 
     def siniestros_geojson(self):
         """
-        Devuelve geojson con los campos especificados en variable 'campos'.
-        :return: geojson
+        Devuelve un json con un geojson por cada año del queryset
+        con los campos especificados en variable 'campos'.
+        :return: json
         """
         resultado = dict()
         siniestros_qs = self._filtrar_siniestros()
+        # Crear una lista con los años que tiene el queryset
         años = [item.anio for item in siniestros_qs.distinct('anio')]
+        # Iterar sobre la lista de años, usando cada año para filtrar el
+        # queryset, serializar ese filtro a geojson, agregando al dict resultado
+        # un nuevo elemento compuesto por:
+        # key: año, value: geojson correspondiente a ese año.
         for año in años:
             resultado[str(año)] = serialize('geojson',
                                             siniestros_qs.filter(anio=año),
                                             geometry_field='geom',
                                             fields=self.campos)
-
-        # geojson = serialize('geojson', siniestros_qs,
-        #                     geometry_field='geom',
-        #                     fields=self.campos)
         return json.dumps(resultado)
