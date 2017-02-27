@@ -136,6 +136,17 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # cambiar para otras opciones
 #SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
+# Para que funcionen los test
+class DisableMigrations(object):
+
+    def __contains__(self, item):
+        return True
+
+    def __getitem__(self, item):
+        return "notmigrations"
+
+MIGRATION_MODULES = DisableMigrations()
+
 LOGIN_URL = 'login'
 
 LOGOUT_URL = 'logout'

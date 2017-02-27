@@ -1,0 +1,2 @@
+# Cambiar settings para que funcionen los tets
+./manage.py test --settings registros.settings_test buscador

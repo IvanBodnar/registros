@@ -12,3 +12,7 @@ class SiniestrosTest(TestCase):
 
     def test_siniestros_queryset(self):
         self.assertEqual(self.s.siniestros_queryset()[0]['direccion_normalizada'], "rivadavia av. y paysandu")
+
+    def test_siniestros_geojson(self):
+        self.assertTrue(isinstance(self.s.siniestros_geojson(), str))
+        self.assertEqual(len(self.s.siniestros_geojson()), 503)

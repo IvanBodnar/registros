@@ -39,7 +39,7 @@ class Hechos(models.Model):
     anio = models.IntegerField(blank=True, null=True)
     fh = models.DateTimeField(blank=True, null=True)
     comuna = models.IntegerField(blank=True, null=True)
-    participantes = ArrayField(models.CharField(max_length=100, blank=True, null=True))
+    participantes = ArrayField(models.CharField(max_length=100, blank=True, null=True, default=None))
     geom_3857 = models.PointField(blank=True, null=True, srid=3857)
     causa = models.CharField(max_length=20, blank=True, null=True)
 
@@ -69,7 +69,7 @@ class Acusados(models.Model):
         return '{}, {}'.format(self.sexo, self.edad)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'acusados'
 
 
@@ -97,5 +97,5 @@ class Victimas(models.Model):
         return '{}, {}'.format(self.sexo, self.edad)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'victimas'
