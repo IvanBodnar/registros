@@ -1,5 +1,9 @@
 from django.test import TestCase
+from django.urls import reverse
 from .siniestros import Siniestros
+from django.http import HttpRequest
+from .views import IngresarCalles
+
 
 
 class SiniestrosTest(TestCase):
@@ -16,3 +20,11 @@ class SiniestrosTest(TestCase):
     def test_siniestros_geojson(self):
         self.assertTrue(isinstance(self.s.siniestros_geojson(), str))
         self.assertEqual(len(self.s.siniestros_geojson()), 503)
+
+
+class IngresarCalleViewsTestCase(TestCase):
+
+    def test_forma_buscador(self):
+        request = HttpRequest()
+        response = IngresarCalles().get(request)
+        self.assertIn(b'Buscador', response.content)
