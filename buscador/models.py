@@ -47,7 +47,7 @@ class Hechos(models.Model):
         return '{}'.format(self.direccion_normalizada)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'hechos'
 
 
