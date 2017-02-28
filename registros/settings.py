@@ -140,7 +140,7 @@ LOGIN_URL = 'login'
 
 LOGOUT_URL = 'logout'
 
-LOGIN_REDIRECT_URL = 'buscador_ingresar_calle'
+LOGIN_REDIRECT_URL = 'user_inicio'
 
 # Expirar la sesion cuando cierra el navegador
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

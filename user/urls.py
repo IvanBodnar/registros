@@ -13,9 +13,8 @@ AuthenticationForm.error_messages = error_messages = {
 
 urlpatterns = [
     url(r'^login/$', auth_views.login,
-        {'template_name': 'user/login.html',
-         'extra_context': {'next': 'user_inicio'}},
+        {'template_name': 'user/login.html'},
         name='login'),
     url(r'^logout/$', auth_views.logout_then_login, name='logout'),
-    url(r'^inicio/$', inicio, name='user_inicio')
+    url(r'^inicio/$', inicio, name='user_inicio'),
 ]
