@@ -27,11 +27,17 @@ $("#mapa_tab").on('shown.bs.tab', function() {
 //}).addTo(map);
 //})
 
-//Mapa de OSM
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-    maxZoom: 19
-}).addTo(map);
+// Mapa de OSM
+//L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+//    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+//    maxZoom: 19
+//}).addTo(map);
+
+// Mapa CARTO
+L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+    maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;' +
+    '<a href="https://carto.com/attribution"> CARTO</a>'
+  }).addTo(map);
 
 // Agrega un popup con algunas propiedades
 // a cada feature de geojson
