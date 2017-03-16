@@ -57,6 +57,30 @@ function agregar_popup(feature, layer) {
     }
 };
 
+
+// Icono para los casos de homicidio
+var homicidio_icon = L.icon({
+    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41]
+})
+
+
+// Retorna un L.marker con el icono homicidio_icono
+// para los casos de causa === 'homicidio'. Se aplica
+// cuando se crean las capas de geojson (var geojson_layer = L.geoJson())
+function agregar_color(feature, lat_long) {
+    if (feature.properties.causa === 'homicidio') {
+        return L.marker(lat_long, {icon: homicidio_icon});
+        //Se puede cambiar el tipo de marker tambien:
+        //return L.circleMarker(lat_long, {color: '#ff6347'});
+    }
+    else {
+        return L.marker(lat_long);
+    }
+}
+
+
 // Crea instancia de markerClusterGroup y la agrega al mapa
 var mcg = L.markerClusterGroup();
 mcg.addTo(map);
@@ -68,6 +92,7 @@ var overlays = {};
 for (var key in gj) {
     var año = JSON.parse(gj[key]);
     var geojson_layer = L.geoJSON(año, {
+                                  pointToLayer: agregar_color,
                                   onEachFeature: agregar_popup
                                  })
     var subgroup = L.featureGroup.subGroup(mcg);
