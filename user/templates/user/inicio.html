@@ -11,17 +11,36 @@
                 <div class="page-header">
                     <h1>Bienvenidos <br> <small>Novedades:</small></h1>
                 </div>
+                <!--Panel nuevo-->
                 <div class="panel panel-primary">
+                  <div class="panel-heading">Selector de Mapas Base</div>
+                  <div class="panel-body">
+                      Permite seleccionar entre el mapa base
+                      de Carto (mas limpio) y el de Open Street Maps
+                       (que contiene mas información).
+                  </div>
+                </div>
+                <!--Panel nuevo-->
+                <div class="panel panel-primary">
+                  <div class="panel-heading">Nuevo Icono para Homicidio</div>
+                  <div class="panel-body">
+                      Los casos de homicidio se distinguen con un ícono
+                       rojo en el mapa.
+                  </div>
+                </div>
+                <!--Panel viejo-->
+                <div class="panel panel-default">
                   <div class="panel-heading">Selector de Capas</div>
                   <div class="panel-body">
                       Ahora pueden filtrarse los siniestros por año en el mapa
                       (esquina superior derecha).
                   </div>
                 </div>
-                <div class="panel panel-primary">
+                <!--Panel viejo-->
+                <div class="panel panel-default">
                   <div class="panel-heading">Nuevo Mapa Base</div>
                   <div class="panel-body">
-                      Se utiliza ahora el mapa base de CARTO.
+                      Se utiliza ahora el mapa base de Carto.
                   </div>
                 </div>
                 <a href="{% url 'buscador_ingresar_calle' %}" class="btn btn-danger btn-lg btn-block">Realizar Búsqueda</a>
