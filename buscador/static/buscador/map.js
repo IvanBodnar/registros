@@ -1,10 +1,26 @@
+
+// Crear los mapas en distintas variables para despues agregarlas
+// el el atributo layers de la definicion de L.map
+// Mapa de OSM
+var mapa_osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+                    maxZoom: 19
+                });
+
+// Mapa CARTO
+var mapa_carto = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+                    maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;' +
+                    '<a href="https://carto.com/attribution"> CARTO</a>'
+                  });
+
 var map = L.map('map', {
     zoom: 12,
     center: [-34.615715, -58.451204],
-    maxZoom: 19
+    maxZoom: 19,
+    layers: [mapa_osm, mapa_carto]
 })//.setView([-34.615715, -58.451204], 12);
 
-//
+
 // Levanta y parsea la var geojson de tabla_buscador.html,
 // la cual tiene el geojson con los siniestros que vienen en
 // el contexto.
@@ -17,27 +33,6 @@ $("#mapa_tab").on('shown.bs.tab', function() {
     map.invalidateSize();
 });
 
-// Mapa de MapBox
-//$(function() {
-//L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-//    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-//    maxZoom: 19,
-//    id: 'ivangbodnar.p7n41boc',
-//    accessToken: 'pk.eyJ1IjoiaXZhbmdib2RuYXIiLCJhIjoiY2lnaXR0YzVvMDAwNXVha3JsZnFlZzBjbyJ9.X17WT4iMx_powofqtqKkDg'
-//}).addTo(map);
-//})
-
-// Mapa de OSM
-//L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-//    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-//    maxZoom: 19
-//}).addTo(map);
-
-// Mapa CARTO
-L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
-    maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;' +
-    '<a href="https://carto.com/attribution"> CARTO</a>'
-  }).addTo(map);
 
 // Agrega un popup con algunas propiedades
 // a cada feature de geojson
@@ -63,7 +58,8 @@ function agregar_popup(feature, layer) {
 var homicidio_icon = L.icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
     iconSize: [25, 41],
-    iconAnchor: [12, 41]
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
 })
 
 
@@ -85,7 +81,15 @@ function agregar_color(feature, lat_long) {
 // Crea instancia de markerClusterGroup y la agrega al mapa
 var mcg = L.markerClusterGroup();
 mcg.addTo(map);
-// Crear objeto para contener las capas
+
+// Crear objeto para contener las capas de mapa base
+var base_maps = {
+    'Mapa OSM': mapa_osm,
+    'Mapa Carto': mapa_carto
+
+}
+
+// Crear objeto para contener las capas de overlay
 var overlays = {};
 
 // Iterar sobre el json, crear las capas de L.geoJSON, agregarles
@@ -101,20 +105,10 @@ for (var key in gj) {
     overlays[key] = subgroup;
 }
 
-// Agregar las capas al control de capas
-L.control.layers(null, overlays).addTo(map);
+// Agregar las capas de mapas base y overlays al control de capas
+L.control.layers(base_maps, overlays).addTo(map);
 
 // Agregar cada capa al mapa
 for (var key in overlays) {
     overlays[key].addTo(map);
 }
-
-
-// Mapa de OSM
-//L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-//    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-//}).addTo(map);
-
-//L.marker([51.5, -0.09]).addTo(map)
-//    .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-//    .openPopup();
