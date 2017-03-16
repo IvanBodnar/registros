@@ -58,7 +58,8 @@ function agregar_popup(feature, layer) {
 };
 
 
-// Icono para los casos de homicidio
+// Icono para los casos de homicidio usando
+// la libreria de leaflet leaflet-color-markers: https://github.com/pointhi/leaflet-color-markers
 var homicidio_icon = L.icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
     iconSize: [25, 41],
