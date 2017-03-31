@@ -60,9 +60,21 @@
                                 </table>
 
                             </div>
-                             <div id="boton_csv">
-                                <a href="{% url 'retornar_csv' %}"><button type="submit" class="btn btn-primary btn-lg btn-block">
-                                Bajar CSV</button></a>
+                            <div class="container">
+                                <div class="row">
+                                    <form action="{% url 'retornar_csv' %}">
+                                         <div id="boton_csv">
+                                             <h3>Elegir Separador:</h3>
+                                             <label class="radio-inline">
+                                              <input type="radio" name="radio_button" value="," checked="">Coma
+                                            </label>
+                                            <label class="radio-inline">
+                                              <input type="radio" name="radio_button" value=";">Punto y Coma
+                                            </label>
+                                            <button  class="btn btn-primary btn-lg">Bajar CSV</button>
+                                         </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

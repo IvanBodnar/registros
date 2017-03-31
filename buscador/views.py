@@ -83,6 +83,8 @@ def retornar_csv(request):
     radio = request.session['radio']
     anios = request.session['anios']
 
+    delimiter = request.GET.get('radio_button', ',')
+
     nombre_csv = '{}_y_{}_{}mts'.format(calle1, calle2, radio)
 
     response = HttpResponse(content_type='text/csv')
@@ -92,7 +94,7 @@ def retornar_csv(request):
     siniestros = Siniestros(interseccion, radio, anios)
     columnas = [campo.replace('anio', 'año') for campo in siniestros.campos]
 
-    writer = csv.DictWriter(response, fieldnames=columnas)
+    writer = csv.DictWriter(response, fieldnames=columnas, delimiter=delimiter)
     writer.writeheader()
 
     for row in siniestros.siniestros_queryset():
