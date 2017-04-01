@@ -2,6 +2,7 @@
 __pycache__/
 registros/environment/
 buscador/fixtures/
+venv/
 shell.txt
 pass.txt
 *.sh
