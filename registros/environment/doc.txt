@@ -1,0 +1,2 @@
+- Ejecutar los .sh con source:
+$ source ./environ.sh

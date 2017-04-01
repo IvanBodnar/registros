@@ -1,9 +1,8 @@
 .idea/
 __pycache__/
-registros/environment/
 buscador/fixtures/
 venv/
 shell.txt
 pass.txt
-*.sh
 *.pyc
+environ_prod.sh
