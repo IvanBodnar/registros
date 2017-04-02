@@ -6,3 +6,4 @@ shell.txt
 pass.txt
 *.pyc
 environ_prod.sh
+environ_dev.sh
