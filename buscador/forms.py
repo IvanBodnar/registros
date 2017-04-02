@@ -8,13 +8,13 @@ from geocoder.exceptions import CalleNoExiste, InterseccionNoExiste
 class CallesForm(forms.Form):
 
     """Crea un qs con los valores unicos para el campo 'anio'."""
-    años_hechos_qs = Hechos.objects.all().distinct('anio')
+    años_hechos_qs = Hechos.objects.all().distinct('anio').exclude(anio__isnull=True)
 
     """
     Crea una lista de tuplas para usar como choices en el form field "años".
     Filtrar a partir de que año se quiere mostrar.
     """
-    años_choices = [(ho.anio, ho.anio) for ho in años_hechos_qs if ho.anio >= 2010]
+    años_choices = [(ho.anio, ho.anio) for ho in años_hechos_qs if ho.anio >= 2010 and ho.anio is not None]
 
     """Campos"""
     calle1 = forms.CharField(max_length=60,

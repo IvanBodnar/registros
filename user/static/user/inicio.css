@@ -3,3 +3,8 @@
   margin-top: 150px;
 }
 
+.panel-danger > .panel-heading {
+  color: white;
+  background-color: #FF8C00;
+  border-color: #FF8C00;
+}
