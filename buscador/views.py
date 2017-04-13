@@ -7,9 +7,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CallesForm
 from .siniestros import Siniestros
-from geocoder.helpers import get_calles, Calle
+from geocoder.helpers import Calle
 from user.models import UserStats
+from .geocoder_connection.request_geocoder import RequestGeocoder
 
+request_geocoder = RequestGeocoder('http://104.197.96.57/')
 
 @login_required
 def ajax_calles(request):
@@ -19,7 +21,7 @@ def ajax_calles(request):
     :param request:
     :return: json
     """
-    return HttpResponse(json.dumps(get_calles()))
+    return HttpResponse(request_geocoder.nombre_calles())
 
 
 class IngresarCalles(LoginRequiredMixin, View):
