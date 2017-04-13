@@ -46,8 +46,8 @@ class IngresarCalles(LoginRequiredMixin, View):
                 anios = bound_form.cleaned_data['anios']
 
                 # Instanciar interseccion y siniestros
-                interseccion = Calle(calle1) + Calle(calle2)
-                siniestros = Siniestros(interseccion, radio, anios)
+                interseccion_api = request_geocoder.interseccion(calle1=calle1, calle2=calle2)
+                siniestros = Siniestros(interseccion_api, radio, anios)
 
                 # Cargar datos en la sesión
                 session['calle1'] = calle1

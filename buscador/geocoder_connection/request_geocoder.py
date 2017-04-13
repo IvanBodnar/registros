@@ -13,4 +13,6 @@ class RequestGeocoder:
 
     def interseccion(self, **kwargs):
         complete_url = self.base_url + 'interseccion/'
-        return requests.get(complete_url, params=kwargs)
+        respuesta = requests.get(complete_url, params=kwargs).json()
+        coordenadas = respuesta['coordenadas']
+        return coordenadas
