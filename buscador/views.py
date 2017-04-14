@@ -1,4 +1,3 @@
-import json
 import csv
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -45,7 +44,8 @@ class IngresarCalles(LoginRequiredMixin, View):
                 radio = bound_form.cleaned_data['radio']
                 anios = bound_form.cleaned_data['anios']
 
-                # Instanciar interseccion y siniestros
+                # Traer las coordenadas de la interseccion
+                # de la api e instanciar Siniestros
                 interseccion_api = request_geocoder.interseccion(calle1=calle1, calle2=calle2)
                 siniestros = Siniestros(interseccion_api, radio, anios)
 
