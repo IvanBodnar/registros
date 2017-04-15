@@ -5,5 +5,6 @@ venv/
 shell.txt
 pass.txt
 *.pyc
+*.log
 environ_prod.sh
 environ_dev.sh

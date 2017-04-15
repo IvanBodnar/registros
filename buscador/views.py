@@ -1,4 +1,5 @@
 import csv
+import json
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
@@ -6,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CallesForm
 from .siniestros import Siniestros
-from geocoder.helpers import Calle
+from geocoder.helpers import Calle, get_calles
 from user.models import UserStats
 from .geocoder_connection.request_geocoder import RequestGeocoder
 
@@ -20,7 +21,13 @@ def ajax_calles(request):
     :param request:
     :return: json
     """
-    return HttpResponse(request_geocoder.nombre_calles())
+    # Probar en geocoder_api, si no hay respuesta
+    # caer en la app local geocoder
+    calles_api = request_geocoder.nombre_calles()
+    if calles_api:
+        return HttpResponse(calles_api)
+    else:
+        return HttpResponse(json.dumps(get_calles()))
 
 
 class IngresarCalles(LoginRequiredMixin, View):
@@ -44,10 +51,15 @@ class IngresarCalles(LoginRequiredMixin, View):
                 radio = bound_form.cleaned_data['radio']
                 anios = bound_form.cleaned_data['anios']
 
-                # Traer las coordenadas de la interseccion
-                # de la api e instanciar Siniestros
-                interseccion_api = request_geocoder.interseccion(calle1=calle1, calle2=calle2)
-                siniestros = Siniestros(interseccion_api, radio, anios)
+                # Probar en geocoder_api, si no hay respuesta
+                # caer en la app local geocoder
+                coordenadas_api = request_geocoder.interseccion(calle1=calle1, calle2=calle2)
+                if coordenadas_api:
+                    coordenadas = coordenadas_api
+                else:
+                    coordenadas = Calle(calle1) + Calle(calle2)
+
+                siniestros = Siniestros(coordenadas, radio, anios)
 
                 # Cargar datos en la sesión
                 session['calle1'] = calle1
