@@ -5,7 +5,7 @@ from geocoder.helpers import Calle
 from geocoder.exceptions import CalleNoExiste, InterseccionNoExiste
 
 
-class CallesForm(forms.Form):
+class InterseccionForm(forms.Form):
 
     """Crea un qs con los valores unicos para el campo 'anio'."""
     años_hechos_qs = Hechos.objects.all().distinct('anio').exclude(anio__isnull=True)
@@ -61,7 +61,7 @@ class CallesForm(forms.Form):
 
     """Valida si la intersección de calle1 y calle2 existe"""
     def clean(self):
-        cleaned_data = super(CallesForm, self).clean()
+        cleaned_data = super(InterseccionForm, self).clean()
         calle1 = cleaned_data.get('calle1', None)
         calle2 = cleaned_data.get('calle2', None)
         if calle1 and calle2:
@@ -70,3 +70,18 @@ class CallesForm(forms.Form):
             except InterseccionNoExiste as e:
                 raise ValidationError(e.args[0])
 
+
+class TramoForm(InterseccionForm):
+
+    altura_inicial = forms.IntegerField(min_value=0,
+                                        max_value=12000,
+                                        label='Altura Inicial',
+                                        widget=forms.NumberInput(attrs={'id': 'altura_inicial',
+                                                                        'class': 'form-control',
+                                                                        'placeholder': 'Altura de inicio del tramo'}))
+    altura_final = forms.IntegerField(min_value=0,
+                                        max_value=12000,
+                                        label='Altura Final',
+                                        widget=forms.NumberInput(attrs={'id': 'altura_final',
+                                                                        'class': 'form-control',
+                                                                        'placeholder': 'Altura donde finaliza el tramo'}))

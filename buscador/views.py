@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import CallesForm
+from .forms import InterseccionForm, TramoForm
 from .siniestros import Siniestros
 from geocoder.helpers import Calle, get_calles
 from user.models import UserStats
@@ -32,7 +32,7 @@ def ajax_calles(request):
 
 class IngresarCalles(LoginRequiredMixin, View):
 
-    form_class = CallesForm
+    form_class = InterseccionForm
     template_name = 'buscador/forma_buscador.html'
     exito = 'buscador/tabla_buscador.html'
 
@@ -88,6 +88,19 @@ class IngresarCalles(LoginRequiredMixin, View):
             return render(request=request,
                           template_name=self.template_name,
                           context={'form': self.form_class()})
+
+
+class TramoView(View):
+
+    form_class = TramoForm
+    template_name = 'buscador/forma_tramo_buscador.html'
+    exito = 'buscador/tabla_buscador.html'
+
+    def get(self, request):
+        bound_form = self.form_class(request.GET)
+        return render(request=request,
+                      template_name=self.template_name,
+                      context={'form': bound_form})
 
 
 @login_required
