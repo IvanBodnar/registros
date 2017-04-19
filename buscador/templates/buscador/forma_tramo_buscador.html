@@ -22,7 +22,7 @@
                     <div class="form-group {% if form.calle1.errors %}alert alert-danger{% endif %}">
                         {{ form.calle1.errors }}
                     </div>
-                    <div class="form-group {%if field.errors %}has-error has-feedback{%endif%}">
+                    <div class="form-group {%if form.calle1.errors %}has-error has-feedback{%endif%}">
                     <label for="{{ form.calle1.id_for_label }}">Calle</label>
                         {{ form.calle1 }}
                     </div>
@@ -31,7 +31,7 @@
                     <div class="form-group {% if form.altura_inicial.errors %}alert alert-danger{% endif %}">
                         {{ form.altura_inicial.errors }}
                     </div>
-                    <div class="form-group {%if field.errors %}has-error has-feedback{%endif%}">
+                    <div class="form-group {%if form.altura_inicial.errors %}has-error has-feedback{%endif%}">
                     <label for="{{ form.altura_inicial.id_for_label }}">{{ form.altura_inicial.label }}</label>
                         {{ form.altura_inicial }}
                     </div>
@@ -40,8 +40,17 @@
                     <div class="form-group {% if form.altura_final.errors %}alert alert-danger{% endif %}">
                         {{ form.altura_final.errors }}
                     </div>
-                    <div class="form-group {%if field.errors %}has-error has-feedback{%endif%}">
+                    <div class="form-group {%if altura_final.errors %}has-error has-feedback{%endif%}">
                     <label for="{{ form.altura_final.id_for_label }}">{{ form.altura_final.label }}</label>
+                        {{ form.altura_final }}
+                    </div>
+
+                    <!-- radio -->
+                    <div class="form-group {% if form.radio.errors %}alert alert-danger{% endif %}">
+                        {{ form.radio.errors }}
+                    </div>
+                    <div class="form-group {%if radio.errors %}has-error has-feedback{%endif%}">
+                    <label for="{{ form.radio.id_for_label }}">Radio de búsqueda</label>
                         {{ form.altura_final }}
                     </div>
 
