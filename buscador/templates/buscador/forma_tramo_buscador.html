@@ -17,16 +17,44 @@
                        <p class="text-center">{{ error }}</p>
                     </div>
                     {% endfor %}
-                    {% for field in form %}
-                        <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
-                            {{ field.errors }}
-                        </div>
-                        <div class="form-group {%if field.errors %}has-error has-feedback{%endif%}">
-                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                            {{ field }}
-                        </div>
-                    {% endfor %}
-                        <button type="submit" class="btn btn-primary btn-lg btn-block">Buscar</button>
+
+                    <!-- calle1 -->
+                    <div class="form-group {% if form.calle1.errors %}alert alert-danger{% endif %}">
+                        {{ form.calle1.errors }}
+                    </div>
+                    <div class="form-group {%if field.errors %}has-error has-feedback{%endif%}">
+                    <label for="{{ form.calle1.id_for_label }}">Calle</label>
+                        {{ form.calle1 }}
+                    </div>
+
+                    <!-- altura_inicial -->
+                    <div class="form-group {% if form.altura_inicial.errors %}alert alert-danger{% endif %}">
+                        {{ form.altura_inicial.errors }}
+                    </div>
+                    <div class="form-group {%if field.errors %}has-error has-feedback{%endif%}">
+                    <label for="{{ form.altura_inicial.id_for_label }}">{{ form.altura_inicial.label }}</label>
+                        {{ form.altura_inicial }}
+                    </div>
+
+                    <!-- altura_final -->
+                    <div class="form-group {% if form.altura_final.errors %}alert alert-danger{% endif %}">
+                        {{ form.altura_final.errors }}
+                    </div>
+                    <div class="form-group {%if field.errors %}has-error has-feedback{%endif%}">
+                    <label for="{{ form.altura_final.id_for_label }}">{{ form.altura_final.label }}</label>
+                        {{ form.altura_final }}
+                    </div>
+
+                    <!-- anios -->
+                    <div class="form-group {% if form.anios.errors %}alert alert-danger{% endif %}">
+                        {{ form.anios.errors }}
+                    </div>
+                    <div class="form-group {%if field.errors %}has-error has-feedback{%endif%}">
+                    <label for="{{ form.anios.id_for_label }}">{{ form.anios.label }}</label>
+                        {{ form.anios }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Buscar</button>
                 </form>
             </div>
         </div>
