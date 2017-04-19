@@ -97,10 +97,33 @@ class TramoView(View):
     exito = 'buscador/tabla_buscador.html'
 
     def get(self, request):
-        bound_form = self.form_class(request.GET)
+
+        """
+        if 'calle1' and 'altura_inicial' and 'altura_final' in request.GET:
+            bound_form = self.form_class(request.GET)
+            user = request.user
+            session = request.session
+            
+            if bound_form.is_valid():
+                
+                # TODO levantar los datos de la sesion para estadisticas
+                
+                # TODO hacer llamada a la api
+                #
+                
+                #siniestros = Siniestros(coordenadas, radio, anios)
+
+                return render(request, self.exito, context={'items': siniestros.siniestros_queryset(),
+                                                            'geojson': siniestros.siniestros_geojson()})
+
+            else:
+                return render(request=request,
+                              template_name=self.template_name,
+                              context={'form': bound_form})
+        """
         return render(request=request,
                       template_name=self.template_name,
-                      context={'form': bound_form})
+                      context={'form': self.form_class()})
 
 
 @login_required
