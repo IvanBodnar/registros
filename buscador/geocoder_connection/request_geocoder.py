@@ -45,3 +45,11 @@ class RequestGeocoder:
         except:
             logging.exception(datetime.datetime.now())
             return None
+
+    def tramo(self, **kwargs):
+
+        complete_url = self.base_url + 'tramo/'
+        respuesta = requests.get(complete_url, params=kwargs, timeout=5)
+        respuesta_json = respuesta.json()
+        coordenadas = respuesta_json['coordenadas']
+        return coordenadas
