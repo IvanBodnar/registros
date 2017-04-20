@@ -10,8 +10,9 @@
     <div class="container" id="forma">
         <div class="row">
             <div class="col-xs-12 col-sm-offset-4 col-sm-4 col-md-offset-4 col-md-4">
-                <form  action="{% url 'buscador_ingresar_calle' %}" method="get">
+                <form  action="{% url 'buscador_tramo' %}" method="get">
                     <!--{% csrf_token %}-->
+                    {{ form.errors }}
                     {% for error in form.non_field_errors %}
                     <div class="{% if error %}alert alert-danger{% endif %}">
                        <p class="text-center">{{ error }}</p>
@@ -51,7 +52,7 @@
                     </div>
                     <div class="form-group {%if radio.errors %}has-error has-feedback{%endif%}">
                     <label for="{{ form.radio.id_for_label }}">Radio de búsqueda</label>
-                        {{ form.altura_final }}
+                        {{ form.radio }}
                     </div>
 
                     <!-- anios -->

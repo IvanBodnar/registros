@@ -90,7 +90,7 @@ class IngresarCalles(LoginRequiredMixin, View):
                           context={'form': self.form_class()})
 
 
-class TramoView(View):
+class TramoView(LoginRequiredMixin, View):
 
     form_class = TramoForm
     template_name = 'buscador/forma_tramo_buscador.html'
@@ -98,20 +98,29 @@ class TramoView(View):
 
     def get(self, request):
 
-        """
-        if 'calle1' and 'altura_inicial' and 'altura_final' in request.GET:
+
+        if request.GET:
             bound_form = self.form_class(request.GET)
             user = request.user
             session = request.session
-            
+
             if bound_form.is_valid():
-                
+
+                calle = bound_form.cleaned_data['calle1']
+                altura_inicial = bound_form.cleaned_data['altura_inicial']
+                altura_final = bound_form.cleaned_data['altura_final']
+                radio = bound_form.cleaned_data['radio']
+                anios = bound_form.cleaned_data['anios']
+
                 # TODO levantar los datos de la sesion para estadisticas
                 
                 # TODO hacer llamada a la api
-                #
-                
-                #siniestros = Siniestros(coordenadas, radio, anios)
+
+                coordenadas_api = request_geocoder.tramo(calle=calle,
+                                                         inicial=altura_inicial,
+                                                         final=altura_final)
+
+                siniestros = Siniestros(coordenadas_api, radio, anios)
 
                 return render(request, self.exito, context={'items': siniestros.siniestros_queryset(),
                                                             'geojson': siniestros.siniestros_geojson()})
@@ -120,7 +129,7 @@ class TramoView(View):
                 return render(request=request,
                               template_name=self.template_name,
                               context={'form': bound_form})
-        """
+
         return render(request=request,
                       template_name=self.template_name,
                       context={'form': self.form_class()})

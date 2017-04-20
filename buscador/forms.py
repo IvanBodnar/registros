@@ -85,3 +85,7 @@ class TramoForm(InterseccionForm):
                                         widget=forms.NumberInput(attrs={'id': 'altura_final',
                                                                         'class': 'form-control',
                                                                         'placeholder': 'Altura donde finaliza el tramo'}))
+
+    def __init__(self, *args, **kwargs):
+        super(TramoForm, self).__init__(*args, **kwargs)
+        self.fields.pop('calle2')
