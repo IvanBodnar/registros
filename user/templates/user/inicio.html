@@ -15,44 +15,23 @@
                 <!--<div class="panel panel-primary">-->
                 <!--panel viejo:-->
                 <!--<div class="panel panel-default">-->
-                <!--Panel nuevo-->
+                <!--panel importante-->
+                <!--panel-danger sobreescrito en inicio.css-->
 
                 <!--Panel-->
-                <!--panel-danger sobreescrito en inicio.css-->
-                <div class="panel panel-danger">
-                  <div class="panel-heading">Agregado Año 2016</div>
-                      <div class="panel-body">
-                          La búsqueda incluye ahora los siniestros correspondientes
-                          al año 2016.
-                      </div>
-                </div>
-                <!--Panel-->
                 <div class="panel panel-primary">
-                  <div class="panel-heading">Selector de Separador para CSV</div>
+                  <div class="panel-heading">Busqueda por Tramos</div>
                       <div class="panel-body">
-                          Permite seleccionar entre el separador usado para bajar el CSV.
-                          Elegir un separador diferente si el CSV no se abre
-                          correctamente en Excel.
+                          Se incorporó la búsqueda por tramos: Ahora pueden
+                          seleccionarse los siniestros ocurridos a lo largo
+                          de un tramo de una determinada arteria, ingresando
+                          la altura inicial y final a buscar.
                       </div>
                 </div>
-                <!--Panel-->
-                <div class="panel panel-default">
-                  <div class="panel-heading">Selector de Mapas Base</div>
-                      <div class="panel-body">
-                          Permite seleccionar entre el mapa base
-                          de Carto (mas limpio) y el de Open Street Maps
-                           (que contiene mas información).
-                      </div>
+                <div class="btn-group">
+                    <a href="{% url 'buscador_ingresar_calle' %}" class="btn btn-danger btn-lg btn-block">Buscar por Intersección</a>
+                    <a href="{% url 'buscador_tramo' %}" class="btn btn-primary btn-lg btn-block">Buscar por Tramo</a>
                 </div>
-                <!--Panel-->
-                <div class="panel panel-default">
-                  <div class="panel-heading">Nuevo Icono para Homicidio</div>
-                      <div class="panel-body">
-                          Los casos de homicidio se distinguen con un ícono
-                           rojo en el mapa.
-                      </div>
-                </div>
-                <a href="{% url 'buscador_ingresar_calle' %}" class="btn btn-danger btn-lg btn-block">Realizar Búsqueda</a>
             </div>
         </div>
    </div>
