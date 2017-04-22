@@ -12,59 +12,21 @@
             <div class="col-xs-12 col-sm-offset-4 col-sm-4 col-md-offset-4 col-md-4">
                 <form  action="{% url 'buscador_tramo' %}" method="get">
                     <!--{% csrf_token %}-->
-                    {{ form.errors }}
                     {% for error in form.non_field_errors %}
                     <div class="{% if error %}alert alert-danger{% endif %}">
                        <p class="text-center">{{ error }}</p>
                     </div>
                     {% endfor %}
-
-                    <!-- calle1 -->
-                    <div class="form-group {% if form.calle1.errors %}alert alert-danger{% endif %}">
-                        {{ form.calle1.errors }}
-                    </div>
-                    <div class="form-group {%if form.calle1.errors %}has-error has-feedback{%endif%}">
-                    <label for="{{ form.calle1.id_for_label }}">Calle</label>
-                        {{ form.calle1 }}
-                    </div>
-
-                    <!-- altura_inicial -->
-                    <div class="form-group {% if form.altura_inicial.errors %}alert alert-danger{% endif %}">
-                        {{ form.altura_inicial.errors }}
-                    </div>
-                    <div class="form-group {%if form.altura_inicial.errors %}has-error has-feedback{%endif%}">
-                    <label for="{{ form.altura_inicial.id_for_label }}">{{ form.altura_inicial.label }}</label>
-                        {{ form.altura_inicial }}
-                    </div>
-
-                    <!-- altura_final -->
-                    <div class="form-group {% if form.altura_final.errors %}alert alert-danger{% endif %}">
-                        {{ form.altura_final.errors }}
-                    </div>
-                    <div class="form-group {%if altura_final.errors %}has-error has-feedback{%endif%}">
-                    <label for="{{ form.altura_final.id_for_label }}">{{ form.altura_final.label }}</label>
-                        {{ form.altura_final }}
-                    </div>
-
-                    <!-- radio -->
-                    <div class="form-group {% if form.radio.errors %}alert alert-danger{% endif %}">
-                        {{ form.radio.errors }}
-                    </div>
-                    <div class="form-group {%if radio.errors %}has-error has-feedback{%endif%}">
-                    <label for="{{ form.radio.id_for_label }}">Radio de búsqueda</label>
-                        {{ form.radio }}
-                    </div>
-
-                    <!-- anios -->
-                    <div class="form-group {% if form.anios.errors %}alert alert-danger{% endif %}">
-                        {{ form.anios.errors }}
-                    </div>
-                    <div class="form-group {%if field.errors %}has-error has-feedback{%endif%}">
-                    <label for="{{ form.anios.id_for_label }}">{{ form.anios.label }}</label>
-                        {{ form.anios }}
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">Buscar</button>
+                    {% for field in form %}
+                        <div class="form-group {% if field.errors %}alert alert-danger{% endif %}">
+                            {{ field.errors }}
+                        </div>
+                        <div class="form-group {%if field.errors %}has-error has-feedback{%endif%}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">Buscar</button>
                 </form>
             </div>
         </div>

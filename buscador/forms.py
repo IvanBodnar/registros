@@ -3,9 +3,10 @@ from django.core.exceptions import ValidationError
 from .models import Hechos
 from geocoder.helpers import Calle
 from geocoder.exceptions import CalleNoExiste, InterseccionNoExiste
+from buscador.geocoder_connection.request_geocoder import RequestGeocoder
 
 
-class BaseBuscadorForm:
+class BaseBuscadorForm(forms.Form):
     """Crea un qs con los valores unicos para el campo 'anio'."""
     años_hechos_qs = Hechos.objects.all().distinct('anio').exclude(anio__isnull=True)
 
@@ -24,7 +25,7 @@ class BaseBuscadorForm:
         return new_calle
 
 
-class InterseccionForm(BaseBuscadorForm, forms.Form):
+class InterseccionForm(BaseBuscadorForm):
 
     calle1 = forms.CharField(max_length=60,
                              label='Calle 1',
@@ -51,12 +52,14 @@ class InterseccionForm(BaseBuscadorForm, forms.Form):
     """Valida si calle1 existe"""
     def clean_calle1(self):
         cleaned = self.cleaned_data['calle1'].lower()
-        BaseBuscadorForm.calles_clean(self, cleaned=cleaned)
+        calle = BaseBuscadorForm.calles_clean(self, cleaned=cleaned)
+        return calle
 
     """Valida si calle2 existe"""
     def clean_calle2(self):
         cleaned = self.cleaned_data['calle2'].lower()
-        BaseBuscadorForm.calles_clean(self, cleaned=cleaned)
+        calle = BaseBuscadorForm.calles_clean(self, cleaned=cleaned)
+        return calle
 
     """Valida si la intersección de calle1 y calle2 existe"""
     def clean(self):
@@ -70,8 +73,13 @@ class InterseccionForm(BaseBuscadorForm, forms.Form):
                 raise ValidationError(e.args[0])
 
 
+class TramoForm(BaseBuscadorForm):
 
-class TramoForm(InterseccionForm):
+    calle = forms.CharField(max_length=60,
+                             label='Calle',
+                             widget=forms.TextInput(attrs={'id': 'calle1',
+                                                           'class': 'form-control',
+                                                           'placeholder': 'Ingrese calle'}))
 
     altura_inicial = forms.IntegerField(min_value=0,
                                         max_value=12000,
@@ -85,7 +93,26 @@ class TramoForm(InterseccionForm):
                                         widget=forms.NumberInput(attrs={'id': 'altura_final',
                                                                         'class': 'form-control',
                                                                         'placeholder': 'Altura donde finaliza el tramo'}))
-    """
-    def __init__(self, *args, **kwargs):
-        super(TramoForm, self).__init__(*args, **kwargs)
-        self.fields.pop('calle2')"""
+
+    radio = forms.IntegerField(min_value=10,
+                               max_value=1000,
+                               label='Distancia',
+                               widget=forms.NumberInput(attrs={'id': 'radio',
+                                                               'class': 'form-control',
+                                                               'placeholder': 'En metros, Mín: 10, Máx: 1000'}))
+
+    anios = forms.TypedMultipleChoiceField(choices=BaseBuscadorForm.años_choices,
+                                           label='Años',
+                                           coerce=int,
+                                           empty_value=2015,
+                                           widget=forms.CheckboxSelectMultiple(attrs={'id': 'anios'}))
+
+    def clean(self):
+        cleaned_data = super(TramoForm, self).clean()
+        calle = cleaned_data.get('calle', None)
+        inicial = cleaned_data.get('altura_inicial', None)
+        final = cleaned_data.get('altura_final', None)
+        request_geocoder = RequestGeocoder()
+        response_tramo = request_geocoder.tramo(calle=calle, inicial=inicial, final=final)
+        if 'error' in response_tramo.keys():
+            raise ValidationError(response_tramo['mensaje'])

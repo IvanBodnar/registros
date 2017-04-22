@@ -4,16 +4,17 @@ import requests
 import datetime
 #from requests.exceptions import RequestException
 
+URL = 'http://104.197.96.57/'
 
 class RequestGeocoder:
     # Pide los datos a la api geocoder
-    def __init__(self, url):
+    def __init__(self):
         """
         Inicializa la instancia con la url base de la
         api geocoder
         :param url str: string representando la url base de la api 
         """
-        self.base_url = url
+        self.base_url = URL
         logging.basicConfig(filename='buscador/geocoder_connection/excepciones.log', level=logging.ERROR)
 
     def nombre_calles(self):
@@ -51,5 +52,4 @@ class RequestGeocoder:
         complete_url = self.base_url + 'tramo/'
         respuesta = requests.get(complete_url, params=kwargs, timeout=5)
         respuesta_json = respuesta.json()
-        coordenadas = respuesta_json['coordenadas']
-        return coordenadas
+        return respuesta_json

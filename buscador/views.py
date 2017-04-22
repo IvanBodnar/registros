@@ -11,7 +11,7 @@ from geocoder.helpers import Calle, get_calles
 from user.models import UserStats
 from .geocoder_connection.request_geocoder import RequestGeocoder
 
-request_geocoder = RequestGeocoder('http://104.197.96.57/')
+request_geocoder = RequestGeocoder()
 
 @login_required
 def ajax_calles(request):
@@ -106,7 +106,7 @@ class TramoView(LoginRequiredMixin, View):
 
             if bound_form.is_valid():
 
-                calle = bound_form.cleaned_data['calle1']
+                calle = bound_form.cleaned_data['calle']
                 altura_inicial = bound_form.cleaned_data['altura_inicial']
                 altura_final = bound_form.cleaned_data['altura_final']
                 radio = bound_form.cleaned_data['radio']
@@ -116,11 +116,11 @@ class TramoView(LoginRequiredMixin, View):
                 
                 # TODO hacer llamada a la api
 
-                coordenadas_api = request_geocoder.tramo(calle=calle,
+                respuesta_api = request_geocoder.tramo(calle=calle,
                                                          inicial=altura_inicial,
                                                          final=altura_final)
 
-                siniestros = Siniestros(coordenadas_api, radio, anios)
+                siniestros = Siniestros(respuesta_api['coordenadas'], radio, anios)
 
                 return render(request, self.exito, context={'items': siniestros.siniestros_queryset(),
                                                             'geojson': siniestros.siniestros_geojson()})
