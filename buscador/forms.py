@@ -5,8 +5,7 @@ from geocoder.helpers import Calle
 from geocoder.exceptions import CalleNoExiste, InterseccionNoExiste
 
 
-class InterseccionForm(forms.Form):
-
+class BaseBuscadorForm:
     """Crea un qs con los valores unicos para el campo 'anio'."""
     años_hechos_qs = Hechos.objects.all().distinct('anio').exclude(anio__isnull=True)
 
@@ -16,7 +15,17 @@ class InterseccionForm(forms.Form):
     """
     años_choices = [(ho.anio, ho.anio) for ho in años_hechos_qs if ho.anio >= 2010 and ho.anio is not None]
 
-    """Campos"""
+    def calles_clean(self, cleaned):
+        try:
+            Calle(cleaned)
+            new_calle = cleaned
+        except CalleNoExiste as e:
+            raise ValidationError(e.args[0])
+        return new_calle
+
+
+class InterseccionForm(BaseBuscadorForm, forms.Form):
+
     calle1 = forms.CharField(max_length=60,
                              label='Calle 1',
                              widget=forms.TextInput(attrs={'id': 'calle1',
@@ -33,7 +42,7 @@ class InterseccionForm(forms.Form):
                                widget=forms.NumberInput(attrs={'id': 'radio',
                                                                'class': 'form-control',
                                                                'placeholder': 'En metros, Mín: 10, Máx: 1000'}))
-    anios = forms.TypedMultipleChoiceField(choices=años_choices,
+    anios = forms.TypedMultipleChoiceField(choices=BaseBuscadorForm.años_choices,
                                            label='Años',
                                            coerce=int,
                                            empty_value=2015,
@@ -42,22 +51,12 @@ class InterseccionForm(forms.Form):
     """Valida si calle1 existe"""
     def clean_calle1(self):
         cleaned = self.cleaned_data['calle1'].lower()
-        try:
-            Calle(cleaned)
-            new_calle = cleaned
-        except CalleNoExiste as e:
-            raise ValidationError(e.args[0])
-        return new_calle
+        BaseBuscadorForm.calles_clean(self, cleaned=cleaned)
 
     """Valida si calle2 existe"""
     def clean_calle2(self):
         cleaned = self.cleaned_data['calle2'].lower()
-        try:
-            Calle(cleaned)
-            new_calle = cleaned
-        except CalleNoExiste as e:
-            raise ValidationError(e.args[0])
-        return new_calle
+        BaseBuscadorForm.calles_clean(self, cleaned=cleaned)
 
     """Valida si la intersección de calle1 y calle2 existe"""
     def clean(self):
@@ -69,6 +68,7 @@ class InterseccionForm(forms.Form):
                 Calle(calle1) + Calle(calle2)
             except InterseccionNoExiste as e:
                 raise ValidationError(e.args[0])
+
 
 
 class TramoForm(InterseccionForm):
@@ -85,7 +85,7 @@ class TramoForm(InterseccionForm):
                                         widget=forms.NumberInput(attrs={'id': 'altura_final',
                                                                         'class': 'form-control',
                                                                         'placeholder': 'Altura donde finaliza el tramo'}))
-
+    """
     def __init__(self, *args, **kwargs):
         super(TramoForm, self).__init__(*args, **kwargs)
-        self.fields.pop('calle2')
+        self.fields.pop('calle2')"""
