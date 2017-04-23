@@ -4,7 +4,6 @@ import requests
 import datetime
 #from requests.exceptions import RequestException
 
-URL = 'http://104.197.96.57/'
 
 class RequestGeocoder:
     # Pide los datos a la api geocoder
@@ -14,6 +13,7 @@ class RequestGeocoder:
         api geocoder
         :param url str: string representando la url base de la api 
         """
+        URL = 'http://104.197.96.57/'
         self.base_url = URL
         logging.basicConfig(filename='buscador/geocoder_connection/excepciones.log', level=logging.ERROR)
 
