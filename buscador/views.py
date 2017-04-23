@@ -13,6 +13,18 @@ from .geocoder_connection.request_geocoder import RequestGeocoder
 
 request_geocoder = RequestGeocoder()
 
+
+def clear_session(session):
+    """
+    Limpia los datos de la sesion no agregados 
+    por la aplicacion
+    :param session: sesion a limpiar (request.session)
+    :return: sesion que contiene solo las keys de django
+    """
+    for key in list(session.keys()):
+        if key not in ['_auth_user_id', '_auth_user_backend', '_auth_user_hash']:
+            del session[key]
+
 @login_required
 def ajax_calles(request):
     """
@@ -43,6 +55,8 @@ class IngresarCalles(LoginRequiredMixin, View):
             bound_form = self.form_class(request.GET)
             user = request.user
             session = request.session
+            # Limpiar la sesion
+            clear_session(session)
 
             if bound_form.is_valid():
                 # Levantar los datos de la forma
@@ -66,6 +80,7 @@ class IngresarCalles(LoginRequiredMixin, View):
                 session['calle2'] = calle2
                 session['radio'] = radio
                 session['anios'] = anios
+                session['coordenadas'] = coordenadas
 
                 # Instanciar y guardar estadísticas de uso
                 user_stats = UserStats(user=user,
@@ -98,11 +113,12 @@ class TramoView(LoginRequiredMixin, View):
 
     def get(self, request):
 
-
         if request.GET:
             bound_form = self.form_class(request.GET)
             user = request.user
             session = request.session
+            # Limpiar la sesion
+            clear_session(session)
 
             if bound_form.is_valid():
 
@@ -113,15 +129,19 @@ class TramoView(LoginRequiredMixin, View):
                 anios = bound_form.cleaned_data['anios']
 
                 respuesta_api = request_geocoder.tramo(calle=calle,
-                                                         inicial=altura_inicial,
-                                                         final=altura_final)
+                                                       inicial=altura_inicial,
+                                                       final=altura_final)
+                coordenadas = respuesta_api['coordenadas']
 
-                siniestros = Siniestros(respuesta_api['coordenadas'], radio, anios)
+                siniestros = Siniestros(coordenadas, radio, anios)
 
                 # Cargar datos en la sesión
                 session['calle1'] = calle
+                session['altura_inicial'] = altura_inicial
+                session['altura_final'] = altura_final
                 session['radio'] = radio
                 session['anios'] = anios
+                session['coordenadas'] = coordenadas
 
                 # Instanciar y guardar estadísticas de uso
                 user_stats = UserStats(user=user,
@@ -148,23 +168,27 @@ class TramoView(LoginRequiredMixin, View):
 
 @login_required
 def retornar_csv(request):
-    calle1 = request.session['calle1']
-    calle2 = request.session['calle2']
-    radio = request.session['radio']
-    anios = request.session['anios']
-
+    calle1 = request.session.get('calle1', None)
+    calle2 = request.session.get('calle2', None)
+    altura_inicial = request.session.get('altura_inicial', None)
+    altura_final = request.session.get('altura_final', None)
+    radio = request.session.get('radio', None)
+    anios = request.session.get('anios', None)
+    coordenadas = request.session.get('coordenadas', None)
     delimiter = request.GET.get('radio_button', ',')
 
-    nombre_csv = '{}_y_{}_{}mts'.format(calle1, calle2, radio)
+    if 'calle2' in request.session.keys():
+        nombre_csv = '{}_y_{}_{}mts'.format(calle1, calle2, radio)
+    else:
+        nombre_csv = '{}_entre_{}_y_{}'.format(calle1, altura_inicial, altura_final)
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(nombre_csv)
 
-    interseccion = Calle(calle1) + Calle(calle2)
-    siniestros = Siniestros(interseccion, radio, anios)
+    siniestros = Siniestros(coordenadas, radio, anios)
     columnas = [campo.replace('anio', 'año') for campo in siniestros.campos]
 
-    writer = csv.DictWriter(response, fieldnames=columnas, delimiter=delimiter)
+    writer = csv.DictWriter(response, fieldnames=columnas, delimiter=delimiter, quoting=csv.QUOTE_ALL)
     writer.writeheader()
 
     for row in siniestros.siniestros_queryset():

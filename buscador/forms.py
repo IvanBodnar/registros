@@ -95,11 +95,11 @@ class TramoForm(BaseBuscadorForm):
                                                                         'placeholder': 'Altura donde finaliza el tramo'}))
 
     radio = forms.IntegerField(min_value=10,
-                               max_value=1000,
-                               label='Distancia',
+                               max_value=500,
+                               label='Distancia de Búsqueda',
                                widget=forms.NumberInput(attrs={'id': 'radio',
                                                                'class': 'form-control',
-                                                               'placeholder': 'En metros, Mín: 10, Máx: 1000'}))
+                                                               'placeholder': 'Radio del buffer a utilizar. Máx: 500 mts.'}))
 
     anios = forms.TypedMultipleChoiceField(choices=BaseBuscadorForm.años_choices,
                                            label='Años',
