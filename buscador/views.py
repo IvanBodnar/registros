@@ -112,15 +112,26 @@ class TramoView(LoginRequiredMixin, View):
                 radio = bound_form.cleaned_data['radio']
                 anios = bound_form.cleaned_data['anios']
 
-                # TODO levantar los datos de la sesion para estadisticas
-                
-                # TODO hacer llamada a la api
-
                 respuesta_api = request_geocoder.tramo(calle=calle,
                                                          inicial=altura_inicial,
                                                          final=altura_final)
 
                 siniestros = Siniestros(respuesta_api['coordenadas'], radio, anios)
+
+                # Cargar datos en la sesión
+                session['calle1'] = calle
+                session['radio'] = radio
+                session['anios'] = anios
+
+                # Instanciar y guardar estadísticas de uso
+                user_stats = UserStats(user=user,
+                                       session_key=session.session_key,
+                                       calle1=calle,
+                                       alturas_tramo=[altura_inicial, altura_final],
+                                       radio=radio,
+                                       anios=anios,
+                                       geom_tramo=siniestros.punto_4326)
+                user_stats.save()
 
                 return render(request, self.exito, context={'items': siniestros.siniestros_queryset(),
                                                             'geojson': siniestros.siniestros_geojson()})

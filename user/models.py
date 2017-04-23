@@ -10,9 +10,11 @@ class UserStats(models.Model):
     fh = models.DateTimeField(auto_now=True, null=False)
     calle1 = models.CharField(max_length=100, null=True)
     calle2 = models.CharField(max_length=100, null=True)
+    alturas_tramo = ArrayField(models.IntegerField(), null=True)
     radio = models.IntegerField(null=True)
     anios = ArrayField(models.IntegerField(), null=True)
     geom = models.PointField(null=True, srid=4326)
+    geom_tramo = models.MultiLineStringField(null=True, srid=4326)
 
     def __str__(self):
         return '{} y {}'.format(self.calle1, self.calle2)
