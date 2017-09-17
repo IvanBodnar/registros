@@ -48,7 +48,7 @@ function agregar_popup(feature, layer) {
         layer.bindPopup(ft.causa.bold().fontcolor('red').fontsize(3).toUpperCase() + '<br>'
                         + 'Lugar: ' + ft.direccion_normalizada + '<br>'
                         + 'Fecha: ' + moment(ft.fecha).format('DD-MM-YYYY') + '<br>'
-                        + 'Participantes: ' + ft.participantes.replace(/\[|\]|\"/g, '') + '<br>');
+                        + 'Tipo de Colisión: ' + ft.tipo_colision1.replace(/\[|\]|\"/g, '') + '<br>');
     }
 };
 

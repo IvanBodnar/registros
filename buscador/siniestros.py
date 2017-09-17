@@ -7,7 +7,7 @@ from django.core.serializers import serialize
 class Siniestros:
 
     # Campos que van a sacar siniestros_queryset() y siniestros_geojson()
-    campos = ['direccion_normalizada', 'fecha', 'hora', 'tipo_calle', 'participantes', 'causa', 'anio']
+    campos = ['direccion_normalizada', 'fecha', 'hora', 'tipo_calle', 'tipo_colision1', 'causa', 'anio']
 
     def __init__(self, punto, radio, anios):
         """
@@ -62,7 +62,7 @@ class Siniestros:
             # Evitar campos nulos
             try:
                 sin['fecha'] = sin['fecha'].strftime('%d-%m-%Y')
-                sin['participantes'] = ' - '.join([s for s in sin['participantes'] if s])
+                #sin['participantes'] = ' - '.join([s for s in sin['participantes'] if s])
             except TypeError:
                 pass
             except AttributeError:

@@ -43,6 +43,8 @@ class Hechos(models.Model):
     geom_3857 = models.PointField(blank=True, null=True, srid=3857)
     causa = models.CharField(max_length=20, blank=True, null=True)
     tipo_colision1 = models.CharField(max_length=60, blank=True, null=True)
+    participantes_victimas = ArrayField(models.CharField(max_length=100, blank=True, null=True, default=None), default=None)
+    participantes_acusados = ArrayField(models.CharField(max_length=100, blank=True, null=True, default=None), default=None)
 
     def __str__(self):
         return '{}'.format(self.direccion_normalizada)
