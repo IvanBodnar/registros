@@ -13,7 +13,7 @@ class RequestGeocoder:
         api geocoder
         :param url str: string representando la url base de la api 
         """
-        URL = 'http://104.197.96.57/'
+        URL = 'http://45.55.62.207/'
         self.base_url = URL
         logging.basicConfig(filename='buscador/geocoder_connection/excepciones.log', level=logging.ERROR)
 
